@@ -5,6 +5,8 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import urllib
 
 # Set the desired user agent string
@@ -33,7 +35,9 @@ def scrapeChampsFashion(url, folderName, maxImages):
     while len(unique_images) < maxImages:
         try:
             # Find the images with class "item-image"
-            images = driver.find_elements(By.TAG_NAME, 'img')
+            images = WebDriverWait(driver, 10).until(
+                EC.presence_of_all_elements_located((By.TAG_NAME, "img"))
+            )
 
             if not images:
                 break
@@ -58,9 +62,9 @@ def scrapeChampsFashion(url, folderName, maxImages):
 
                     i += 1
 
-            # Scroll to load more images
-            # driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            # time.sleep(1)  # Wait for the page to load new images
+                # Scroll to load more images
+                # driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                time.sleep(1)  # Wait for the page to load new images
 
             # # Check if the "next" button exists
             # load_more_button = driver.find_element(
