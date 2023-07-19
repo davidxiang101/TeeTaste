@@ -86,10 +86,10 @@ def scrapeChampsFashion(url, folderName, maxImages):
 if not os.path.exists("images/ChampsImages"):
     os.makedirs("images/ChampsImages")
 
-maxImages = 100
+# Scrape images for each category
+for category in categories:
+  
+    url = f"https://www.amazon.com/s?rh=n%3A7141123011&page=1&keywords={category}"
+    folderName = category.replace("-", "_")
 
-url = "https://www.champssports.com/en/category/mens/clothing/t-shirts.html"
-scrapeChampsFashion(url, "images/ChampsImages", maxImages)
-
-# Close the browser
-driver.quit()
+    scrapeChampsFashion(url, folderName, maxImagesPerCategory)
