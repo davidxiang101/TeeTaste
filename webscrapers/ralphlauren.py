@@ -22,18 +22,19 @@ webdriver_service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=webdriver_service, options=chrome_options)
 
 
-# This function will scrape images from the H&M fashion section
-def scrapeRalphLaurenFashion(url, folderName, maxImages):
+# This function will scrape images from the Ralph Lauren fashion section
+def scrapeRalphLaurenFashion(url, folderName, maxImages, timeout):
     driver.get(url)
     print("Folder Name:", folderName)
 
     unique_images = set()  # Track unique image URLs
     i = 1
 
+    start_time = time.time()
     while len(unique_images) < maxImages:
         try:
-            # Find the images with class "item-image"
-            images = driver.find_elements(By.CSS_SELECTOR, '.product-image img')
+            # Find the images with class "product-image"
+            images = driver.find_elements(By.CSS_SELECTOR, ".product-image img")
 
             if not images:
                 break
@@ -59,16 +60,22 @@ def scrapeRalphLaurenFashion(url, folderName, maxImages):
 
                     i += 1
 
+                if time.time() - start_time > timeout:
+                    print("Timeout reached. Exiting the loop.")
+                    break
+
+            if time.time() - start_time > timeout:
+                print("Timeout reached. Exiting the loop.")
+                break
+
             # Scroll to load more images
             driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             time.sleep(1)  # Wait for the page to load new images
 
-            # Check if the "Load more products" button exists
-            load_more_button = driver.find_element(
-                By.CSS_SELECTOR, 'a.view-all'
-            )
+            # Check if the "Load more" button exists
+            load_more_button = driver.find_element(By.CSS_SELECTOR, "a.more-button")
             if load_more_button.is_displayed():
-                # Click the "Load more products" button
+                # Click the "Load more" button
                 driver.execute_script("arguments[0].click();", load_more_button)
                 time.sleep(5)  # Wait for the page to load new products
             else:
@@ -84,9 +91,10 @@ if not os.path.exists("images/RalphLaurenImages"):
     os.makedirs("images/RalphLaurenImages")
 
 maxImages = 100
+timeout = 60  # Timeout in seconds
 
 url = "https://www.ralphlauren.com/men-clothing-t-shirts"
-scrapeRalphLaurenFashion(url, "images/RalphLaurenImages", maxImages)
+scrapeRalphLaurenFashion(url, "images/RalphLaurenImages", maxImages, timeout)
 
 # Close the browser
 driver.quit()
