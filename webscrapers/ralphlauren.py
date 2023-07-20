@@ -8,8 +8,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 import urllib
 
 # Set the desired user agent string
-user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36"
-
+user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4900.88 Safari/537.36"
 # Configure Chrome options
 chrome_options = Options()
 chrome_options.add_argument("--headless")  # Run Chrome in headless mode
@@ -33,7 +32,7 @@ def scrapeRalphLaurenFashion(url, folderName, maxImages):
     while len(unique_images) < maxImages:
         try:
             # Find the images with class "item-image"
-            images = driver.find_elements(By.CSS_SELECTOR, '.product-image img')
+            images = driver.find_elements(By.CSS_SELECTOR, 'img.default-img')
 
             if not images:
                 break
@@ -41,8 +40,6 @@ def scrapeRalphLaurenFashion(url, folderName, maxImages):
             for image in images:
                 if i > maxImages:
                     break
-
-                # Get the image source URL
                 image_url = image.get_attribute("src")
                 if image_url and image_url not in unique_images:
                     unique_images.add(image_url)
@@ -60,7 +57,12 @@ def scrapeRalphLaurenFashion(url, folderName, maxImages):
                     i += 1
 
             # Scroll to load more images
-            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            total_height = driver.execute_script("return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight );")
+
+            # Calculate one-eighth of the page height
+            one_eighth_height = total_height // 8
+
+            driver.execute_script("window.scrollTo(0, {});".format(one_eighth_height))
             time.sleep(1)  # Wait for the page to load new images
 
             # Check if the "Load more products" button exists
@@ -70,7 +72,8 @@ def scrapeRalphLaurenFashion(url, folderName, maxImages):
             if load_more_button.is_displayed():
                 # Click the "Load more products" button
                 driver.execute_script("arguments[0].click();", load_more_button)
-                time.sleep(5)  # Wait for the page to load new products
+                time.sleep(15)  # Wait for the page to load new products
+                driver.execute_script("window.scrollTo(0, {});".format(one_eighth_height))
             else:
                 break
 
@@ -80,13 +83,13 @@ def scrapeRalphLaurenFashion(url, folderName, maxImages):
 
 
 # Create a folder to store the images
-if not os.path.exists("images/RalphLaurenImages"):
-    os.makedirs("images/RalphLaurenImages")
+if not os.path.exists("images/RalphLaurenImages1"):
+    os.makedirs("images/RalphLaurenImages1")
 
 maxImages = 100
 
 url = "https://www.ralphlauren.com/men-clothing-t-shirts"
-scrapeRalphLaurenFashion(url, "images/RalphLaurenImages", maxImages)
+scrapeRalphLaurenFashion(url, "images/RalphLaurenImages1", maxImages)
 
 # Close the browser
 driver.quit()
