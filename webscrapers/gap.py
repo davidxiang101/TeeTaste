@@ -8,12 +8,12 @@ from webdriver_manager.chrome import ChromeDriverManager
 import urllib
 
 # Set the desired user agent string
-user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36"
+user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36"
 # Configure Chrome options
 chrome_options = Options()
 # chrome_options.add_argument("--headless")  # Run Chrome in headless mode
-# chrome_options.add_argument("--no-sandbox")
-# chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument(f"user-agent={user_agent}")
 
 # Set up the Chrome driver
@@ -25,13 +25,13 @@ driver = webdriver.Chrome(service=webdriver_service, options=chrome_options)
 def scrapeGapFashion(url, folderName, maxImages):
     driver.get(url)
     print("Folder Name:", folderName)
-    time.sleep(5)
+
     unique_images = set()  # Track unique image URLs
     i = 1
     while len(unique_images) < maxImages:
         try:
             # Find the images with class "item-image"
-            images = driver.find_elements(By.CSS_SELECTOR, 'img.category-page-1ud3ku6')
+            images = driver.find_elements(By.CSS_SELECTOR, 'img.category-page-1fe0xra')
 
             if not images:
                 break
@@ -60,9 +60,7 @@ def scrapeGapFashion(url, folderName, maxImages):
             if before == i:
               break
             # Scroll to load more images
-            total_height = driver.execute_script("return document.body.scrollHeight;")
-            # go_down = total_height // 8
-            driver.execute_script("window.scrollTo(0, {});".format(total_height))
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             time.sleep(10)  # Wait for the page to load new images
 
         except Exception as e:
@@ -71,13 +69,13 @@ def scrapeGapFashion(url, folderName, maxImages):
 
 
 # Create a folder to store the images
-if not os.path.exists("images/GapGraphicImages"):
-    os.makedirs("images/GapGraphicImages")
+if not os.path.exists("images/GapImages"):
+    os.makedirs("images/GapImages")
 
 maxImages = 100
 
-url = "https://www.gap.com/browse/category.do?cid=1197004&nav=meganav%3AMen%3ACategories%3AGraphic%20T-Shirts"
-scrapeGapFashion(url, "images/GapGraphicImages", maxImages)
+url = "https://www.gap.com/browse/category.do?cid=5225&nav=meganav%3AMen%3ACategories%3AT-Shirts#pageId=0&department=75"
+scrapeGapFashion(url, "images/GapImages", maxImages)
 
 # Close the browser
 driver.quit()
