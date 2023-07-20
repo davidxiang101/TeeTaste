@@ -45,7 +45,7 @@ def download_images(url, download_path):
         scroll_height = driver.execute_script("return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight );")
         while True:
             driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(2)  # Adjust the wait time as needed
+            time.sleep(10)  # Adjust the wait time as needed
             new_scroll_height = driver.execute_script("return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight );")
             if new_scroll_height == scroll_height:
                 # No more additional images to load, break the loop
@@ -61,13 +61,13 @@ def download_images(url, download_path):
         for picture_tag in image_tags:
             source_tag = picture_tag.find('source', srcset=True)
             if source_tag:
-                img_url = source_tag['srcset'].split(',')[0].strip().split()[0]
+                img_url = source_tag['srcset']#.split()[0].strip().split()[0]
                 print(img_url)
 
                 # Download and save the image
                 filename = f"image_{i}.jpg"
                 image_path = os.path.join(download_path, filename)
-                img_response = requests.get(img_url)
+                img_response = requests.get(img_url, headers=headers)
                 if img_response.status_code == 200:
                     with open(image_path, 'wb') as f:
                         f.write(img_response.content)
