@@ -31,9 +31,7 @@ def download_images(url, download_path):
         os.makedirs(download_path)
 
     # Set up the Chrome WebDriver
-    chromedriver_path = '/path/to/chromedriver'  # Replace with the actual path to chromedriver
-    chrome_service = ChromeService(executable_path=chromedriver_path)
-    driver = webdriver.Chrome(service=chrome_service)
+    driver = webdriver.Chrome()
 
     try:
         # Navigate to the URL
@@ -63,7 +61,7 @@ def download_images(url, download_path):
         for picture_tag in image_tags:
             source_tag = picture_tag.find('source', srcset=True)
             if source_tag:
-                img_url = "https:" + source_tag['srcset'].split(',')[-1].strip().split()[0]
+                img_url = source_tag['srcset'].split(',')[0].strip().split()[0]
                 print(img_url)
 
                 # Download and save the image
