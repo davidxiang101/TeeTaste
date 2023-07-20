@@ -4,6 +4,23 @@ import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
+# Set the desired user agent string
+user_agents = [
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Edge/95.0.1020.30 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/95.0",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Version/14.1.2 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Edge/95.0.1020.30 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/95.0",
+    ]
+
+headers = {
+    "User-Agent": user_agents[2],
+    "Accept-Language": "en-US,en;q=0.9",
+}
+
 def scrape_images(url, download_path):
     # Create the download directory if it doesn't exist
     if not os.path.exists(download_path):
@@ -39,7 +56,7 @@ def scrape_images(url, download_path):
             # Download and save the image
             filename = f"image_{i}.jpg"
             image_path = os.path.join(download_path, filename)
-            img_response = requests.get(img_url)
+            img_response = requests.get(img_url, headers=headers)
             if img_response.status_code == 200:
                 with open(image_path, 'wb') as f:
                     f.write(img_response.content)
