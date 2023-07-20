@@ -25,7 +25,7 @@ driver = webdriver.Chrome(service=webdriver_service, options=chrome_options)
 
 
 # This function will scrape images from the H&M fashion section
-def scrapeChampsFashion(url, folderName, maxImages):
+def scrapeVansFashion(url, folderName, maxImages):
     driver.get(url)
     print("Folder Name:", folderName)
 
@@ -35,9 +35,7 @@ def scrapeChampsFashion(url, folderName, maxImages):
     while len(unique_images) < maxImages:
         try:
             # Find the images with class "item-image"
-            images = WebDriverWait(driver, 10).until(
-                EC.presence_of_all_elements_located((By.TAG_NAME, "img"))
-            )
+            images = driver.find_elements(By.TAG_NAME, 'img')
 
             if not images:
                 break
@@ -74,8 +72,8 @@ def scrapeChampsFashion(url, folderName, maxImages):
             #     # Click the "Load more products" button
             #     driver.execute_script("arguments[0].click();", load_more_button)
             #     time.sleep(2)  # Wait for the page to load new products
-            else:
-                break
+            # else:
+            #     break
 
         except Exception as e:
             print("Error:", str(e))
@@ -83,13 +81,13 @@ def scrapeChampsFashion(url, folderName, maxImages):
 
 
 # Create a folder to store the images
-if not os.path.exists("images/ChampsImages"):
-    os.makedirs("images/ChampsImages")
+if not os.path.exists("images/VansImages"):
+    os.makedirs("images/VansImages")
 
-# Scrape images for each category
-for category in categories:
-  
-    url = f"https://www.amazon.com/s?rh=n%3A7141123011&page=1&keywords={category}"
-    folderName = category.replace("-", "_")
+maxImages = 100
 
-    scrapeChampsFashion(url, folderName, maxImagesPerCategory)
+url = "https://www.vans.com/en-us/categories/mens-t-shirts-and-tops-c5810?f=Clothing%20Style,Graphic"
+scrapeVansFashion(url, "images/VansImages", maxImages)
+
+# Close the browser
+driver.quit()
