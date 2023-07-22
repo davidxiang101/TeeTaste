@@ -43,14 +43,14 @@ if __name__ == "__main__":
                      "images/TillysImages", "images/TommyHilfigerImages", "images/UniqloGraphicImages",
                      "images/UniqloImages", "images/UrbanOutfittersImages", "images/VansImages", "images/ZaraImages"]
     
-    output_folders = ["images/AEImagesStandardized", "images/AmazonImages/mens_polosStandardized", "images/AmazonImages/mens_shirtsStandardized", 
-                     "images/AmazonImages/mens_tshirtsStandardized", "images/AsosImagesStandardized", 
-                     "images/DiorImagesStandardized", "images/GapGraphicImagesStandardized", "images/GapImagesStandardized", 
-                     "images/GucciImagesStandardized", "images/HMImagesStandardized", "images/MacysImagesStandardized",
-                     "images/NorthFaceImagesStandardized", "images/OldNavyImagesStandardized", "images/PacSunImagesStandardized",
-                     "images/PradaImagesStandardized", "images/RalphLaurenImagesStandardized", "images/SssenseImagesStandardized",
-                     "images/TillysImagesStandardized", "images/TommyHilfigerImagesStandardized", "images/UniqloGraphicImagesStandardized",
-                     "images/UniqloImagesStandardized", "images/UrbanOutfittersImagesStandardized", "images/VansImagesStandardized", "images/ZaraImagesStandardized"]
+    output_folders = ["standardizedImages/AEImagesStandardized", "standardizedImages/AmazonImages/mens_polosStandardized", "standardizedImages/AmazonImages/mens_shirtsStandardized", 
+                     "standardizedImages/AmazonImages/mens_tshirtsStandardized", "standardizedImages/AsosImagesStandardized", 
+                     "standardizedImages/DiorImagesStandardized", "standardizedImages/GapGraphicImagesStandardized", "standardizedImages/GapImagesStandardized", 
+                     "standardizedImages/GucciImagesStandardized", "standardizedImages/HMImagesStandardized", "standardizedImages/MacysImagesStandardized",
+                     "standardizedImages/NorthFaceImagesStandardized", "standardizedImages/OldNavyImagesStandardized", "standardizedImages/PacSunImagesStandardized",
+                     "standardizedImages/PradaImagesStandardized", "standardizedImages/RalphLaurenImagesStandardized", "standardizedImages/SssenseImagesStandardized",
+                     "standardizedImages/TillysImagesStandardized", "standardizedImages/TommyHilfigerImagesStandardized", "standardizedImages/UniqloGraphicImagesStandardized",
+                     "standardizedImages/UniqloImagesStandardized", "standardizedImages/UrbanOutfittersImagesStandardized", "standardizedImages/VansImagesStandardized", "standardizedImages/ZaraImagesStandardized"]
     
     target_width = 400  # Replace with your desired width
     target_height = 400  # Replace with your desired height
