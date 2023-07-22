@@ -57,7 +57,7 @@ def download_images(url, download_path):
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         image_tags = soup.find_all('picture', class_='product-tile__image')
 
-        i = 0
+        i = 120
         for picture_tag in image_tags:
             source_tag = picture_tag.find('source', srcset=True)
             if source_tag:
@@ -83,7 +83,8 @@ def download_images(url, download_path):
         driver.quit()
 
 if __name__ == "__main__":
-    ssense_url = "https://www.ssense.com/en-us/men/tops"
+    # ssense_url = "https://www.ssense.com/en-us/men/tops"
+    ssense_url = "https://www.ssense.com/en-us/men/t-shirts?page=2"
     download_path = "images/SsenseImages"  # The directory will be created if it doesn't exist
 
     download_images(ssense_url, download_path)
