@@ -10,23 +10,25 @@ import requests
 
 # Set the desired user agent string
 user_agents = [
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36",
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Edge/95.0.1020.30 Safari/537.36",
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/95.0",
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Version/14.1.2 Safari/537.36",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Edge/95.0.1020.30 Safari/537.36",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/95.0",
-    ]
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Edge/95.0.1020.30 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/95.0",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Version/14.1.2 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Edge/95.0.1020.30 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/95.0",
+]
 
 headers = {
     "User-Agent": user_agents[5],
     "Accept-Language": "en-US,en;q=0.9",
 }
 
-def scroll_to_height(driver, height):
-    driver.execute_script(f"window.scrollTo(0, {height});")
+
+def scroll_to_height(driver):
+    driver.execute_script(f"window.scrollTo(0, document.body.scrollHeight - 2400);")
+
 
 def download_images(url, download_path):
     # Create the download directory if it doesn't exist
@@ -55,20 +57,20 @@ def download_images(url, download_path):
         #         break
         #     else:
         #         scroll_height = new_scroll_height
-        scroll_increment = 500  # Adjust this value to control the scrolling amount
 
         for i in range(20):  # Perform 20 partial scrolls
-            scroll_to_height(driver, scroll_increment * i)
-            time.sleep(2)  # Add a short delay to allow the content to load before scrolling further
-            
+            scroll_to_height(driver)
+            time.sleep(
+                2
+            )  # Add a short delay to allow the content to load before scrolling further
 
         # Now, scrape and download the images
-        soup = BeautifulSoup(driver.page_source, 'html.parser')
-        images = soup.find_all('img', class_='w-100')
+        soup = BeautifulSoup(driver.page_source, "html.parser")
+        images = soup.find_all("img", class_="w-100")
 
         i = 0
         for image in images:
-            img_url = image['src']
+            img_url = image["src"]
             print(img_url)
 
             # Download and save the image
@@ -76,7 +78,7 @@ def download_images(url, download_path):
             image_path = os.path.join(download_path, filename)
             img_response = requests.get(img_url, headers=headers)
             if img_response.status_code == 200:
-                with open(image_path, 'wb') as f:
+                with open(image_path, "wb") as f:
                     f.write(img_response.content)
                 print(f"Downloaded: {filename}")
             else:
@@ -87,8 +89,11 @@ def download_images(url, download_path):
         # Close the browser
         driver.quit()
 
+
 if __name__ == "__main__":
     ssense_url = "https://www.pacsun.com/mens/graphic-tees/"
-    download_path = "images/PacSunImages"  # The directory will be created if it doesn't exist
+    download_path = (
+        "images/PacSunImages"  # The directory will be created if it doesn't exist
+    )
 
     download_images(ssense_url, download_path)
