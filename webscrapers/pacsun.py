@@ -26,8 +26,8 @@ headers = {
 }
 
 
-def scroll_to_height(driver):
-    driver.execute_script(f"window.scrollTo(0, document.body.scrollHeight - 2400);")
+def scroll_to_height(driver, height):
+    driver.execute_script(f"window.scrollTo(0, {height});")
 
 
 def download_images(url, download_path):
@@ -58,11 +58,11 @@ def download_images(url, download_path):
         #     else:
         #         scroll_height = new_scroll_height
 
-        for i in range(20):  # Perform 20 partial scrolls
-            scroll_to_height(driver)
-            time.sleep(
-                2
-            )  # Add a short delay to allow the content to load before scrolling further
+        scroll_increment = 400  # Adjust this value to control the scrolling amount
+
+        for i in range(40):  # Perform 20 partial scrolls
+            scroll_to_height(driver, scroll_increment * i)
+            time.sleep(1)  # Add a short delay to allow the content to load before scrolling further
 
         # Now, scrape and download the images
         soup = BeautifulSoup(driver.page_source, "html.parser")
