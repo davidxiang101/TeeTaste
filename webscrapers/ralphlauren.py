@@ -8,11 +8,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 import urllib
 
 # Set the desired user agent string
-user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36"
-
+user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Safari/537.36"
 # Configure Chrome options
 chrome_options = Options()
-chrome_options.add_argument("--headless")  # Run Chrome in headless mode
 chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument(f"user-agent={user_agent}")
@@ -22,23 +20,22 @@ webdriver_service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=webdriver_service, options=chrome_options)
 
 
-# This function will scrape images from the Ralph Lauren fashion section
-def scrapeRalphLaurenFashion(url, folderName, maxImages, timeout):
+# This function will scrape images from the H&M fashion section
+def scrapeRalphLaurenFashion(url, folderName, maxImages):
     driver.get(url)
     print("Folder Name:", folderName)
-
+    time.sleep(30)
     unique_images = set()  # Track unique image URLs
     i = 1
 
-    start_time = time.time()
     while len(unique_images) < maxImages:
         try:
-            # Find the images with class "product-image"
-            images = driver.find_elements(By.CSS_SELECTOR, ".product-image img")
+            # Find the images with class "item-image"
+            images = driver.find_elements(By.CSS_SELECTOR, "img.default-img")
 
             if not images:
                 break
-
+            before = i
             for image in images:
                 if i > maxImages:
                     break
@@ -60,26 +57,31 @@ def scrapeRalphLaurenFashion(url, folderName, maxImages, timeout):
 
                     i += 1
 
-                if time.time() - start_time > timeout:
-                    print("Timeout reached. Exiting the loop.")
-                    break
-
-            if time.time() - start_time > timeout:
-                print("Timeout reached. Exiting the loop.")
+            # Scroll to load more images
+            if before == i:
                 break
-
             # Scroll to load more images
             driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(1)  # Wait for the page to load new images
+            time.sleep(10)  # Wait for the page to load new images
+            # total_height = driver.execute_script("return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight );")
 
-            # Check if the "Load more" button exists
-            load_more_button = driver.find_element(By.CSS_SELECTOR, "a.more-button")
-            if load_more_button.is_displayed():
-                # Click the "Load more" button
-                driver.execute_script("arguments[0].click();", load_more_button)
-                time.sleep(5)  # Wait for the page to load new products
-            else:
-                break
+            # # Calculate one-eighth of the page height
+            # one_eighth_height = total_height // 8
+
+            # driver.execute_script("window.scrollTo(0, {});".format(one_eighth_height))
+            # time.sleep(10)  # Wait for the page to load new images
+
+            # Check if the "Load more products" button exists
+            # load_more_button = driver.find_element(
+            #     By.CSS_SELECTOR, 'a.view-all'
+            # )
+            # if load_more_button.is_displayed():
+            #     # Click the "Load more products" button
+            #     driver.execute_script("arguments[0].click();", load_more_button)
+            #     time.sleep(15)  # Wait for the page to load new products
+            #     driver.execute_script("window.scrollTo(0, {});".format(one_eighth_height))
+            # else:
+            #     break
 
         except Exception as e:
             print("Error:", str(e))
@@ -91,10 +93,9 @@ if not os.path.exists("images/RalphLaurenImages"):
     os.makedirs("images/RalphLaurenImages")
 
 maxImages = 100
-timeout = 60  # Timeout in seconds
 
 url = "https://www.ralphlauren.com/men-clothing-t-shirts"
-scrapeRalphLaurenFashion(url, "images/RalphLaurenImages", maxImages, timeout)
+scrapeRalphLaurenFashion(url, "images/RalphLaurenImages", maxImages)
 
 # Close the browser
 driver.quit()

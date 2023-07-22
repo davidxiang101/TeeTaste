@@ -90,7 +90,7 @@ def scrapeZaraFashion(url, folderName, maxImages, timeout):
 if not os.path.exists("images/ZaraImages"):
     os.makedirs("images/ZaraImages")
 
-maxImages = 100
+maxImages = 500
 timeout = 60  # Timeout in seconds
 
 url = "https://www.zara.com/us/en/man-tshirts-l855.html?v1=2297854"
