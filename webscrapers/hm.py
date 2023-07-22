@@ -83,7 +83,7 @@ def scrapeHMFashion(url, folderName, maxImages):
 if not os.path.exists("images/HMImages"):
     os.makedirs("images/HMImages")
 
-maxImages = 100
+maxImages = 500
 
 url = "https://www2.hm.com/en_us/men/products/t-shirts-tank-tops.html"
 scrapeHMFashion(url, "images/HMImages", maxImages)

@@ -1,5 +1,6 @@
 import time
 import os
+import random
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -35,6 +36,7 @@ def scrapeUrbanOutfittersFashion(url, folderName, maxImages, timeout):
     print("Folder Name:", folderName)
 
     unique_images = set()  # Track unique image URLs
+
     i = 1
 
     start_time = time.time()
@@ -59,27 +61,30 @@ def scrapeUrbanOutfittersFashion(url, folderName, maxImages, timeout):
                     print("Image number", i, ":\n", image_url, "\n")
                     filename = f"image_{i}.jpg"
 
-                    # Create the folder if it doesn't exist
-                    if not os.path.exists(folderName):
-                        os.makedirs(folderName)
+                # Create the folder if it doesn't exist
+                if not os.path.exists(folderName):
+                    os.makedirs(folderName)
 
-                    # Download and save the image
-                    image_path = os.path.join(folderName, filename)
-                    urllib.request.urlretrieve(image_url, image_path)
+                # Download and save the image
+                image_path = os.path.join(folderName, filename)
+                urllib.request.urlretrieve(image_url, image_path)
 
-                    i += 1
+                i += 1
 
                 if time.time() - start_time > timeout:
                     print("Timeout reached. Exiting the loop.")
                     break
 
+                # Emulate user interaction by scrolling and waiting random intervals
+                driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                time.sleep(random.uniform(1, 3))
+
             if time.time() - start_time > timeout:
                 print("Timeout reached. Exiting the loop.")
                 break
 
-            # Scroll to load more images
-            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(2)  # Wait for the page to load new images
+            # Randomly vary the number of requests by waiting before scrolling
+            time.sleep(random.uniform(2, 4))
 
         except Exception as e:
             print("Error:", str(e))

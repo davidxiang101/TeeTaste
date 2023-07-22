@@ -31,7 +31,7 @@ def scrapeRalphLaurenFashion(url, folderName, maxImages):
     while len(unique_images) < maxImages:
         try:
             # Find the images with class "item-image"
-            images = driver.find_elements(By.CSS_SELECTOR, 'img.default-img')
+            images = driver.find_elements(By.CSS_SELECTOR, "img.default-img")
 
             if not images:
                 break
@@ -59,7 +59,7 @@ def scrapeRalphLaurenFashion(url, folderName, maxImages):
 
             # Scroll to load more images
             if before == i:
-              break
+                break
             # Scroll to load more images
             driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             time.sleep(10)  # Wait for the page to load new images
