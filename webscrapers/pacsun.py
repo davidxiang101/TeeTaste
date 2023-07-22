@@ -1,125 +1,80 @@
-# import os
-# import requests
-# from bs4 import BeautifulSoup
-# from selenium import webdriver
-# import urllib.parse as urlparse
-# import time
-
-# # import random 
-# from random import random
-
-# def download_images(url, download_path, max_images=100):
-#     # Create the download directory if it doesn't exist
-#     if not os.path.exists(download_path):
-#         os.makedirs(download_path)
-
-#     # Create a browser instance using ChromeDriver
-#     driver = webdriver.Chrome()
-
-#     try:
-#         # Set the user agent and headers
-#         driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": user_agent})
-#         driver.set_network_conditions(
-#             offline=False,
-#             latency=0,  # Additional latency (ms)
-#             download_throughput=1024 * 1024,  # Download speed (bytes/s)
-#             upload_throughput=1024 * 1024,  # Upload speed (bytes/s)
-#         )
-
-#         # Navigate to the URL
-#         driver.get(url)
-
-#         image_count = 0
-#         while True:
-#             # Wait for a short period to let new images load
-#             time.sleep(10 * random())
-#             print(2)
-
-#             # Parse the loaded HTML
-#             soup = BeautifulSoup(driver.page_source, 'html.parser')
-#             image_tags = soup.find_all('img', class_='w-100', srcset=True, src=False)
-#             print(3)
-#             for img_tag in image_tags:
-#                 print(img_tag)
-#                 img_url = img_tag['srcset']
-#                 # Get the first image URL from the srcset (assuming the default resolution is listed first)
-#                 img_url = img_url.split(',')[0].strip().split(' ')[0]
-
-#                 # If the image URL is relative, convert it to an absolute URL
-#                 if not img_url.startswith('http'):
-#                     img_url = urlparse.urljoin(url, img_url)
-
-#                 # Download and save the image
-#                 filename = f"image_{image_count}.jpg"
-#                 image_path = os.path.join(download_path, filename)
-#                 img_response = requests.get(img_url)
-#                 if img_response.status_code == 200:
-#                     with open(image_path, 'wb') as f:
-#                         f.write(img_response.content)
-#                     print(f"Downloaded: {filename}")
-#                     image_count += 1
-#                     if image_count >= max_images:
-#                         break  # Reached the max image count, exit the loop
-
-#             if image_count >= max_images:
-#                 break  # Exit the loop if the maximum image count is reached
-
-#             # Scroll down to the bottom of the page
-#             driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-
-#     finally:
-#         # Close the browser
-#         driver.quit()
-
-# if __name__ == "__main__":
-#     user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36"
-
-#     pacsun_url = "https://www.pacsun.com/mens/graphic-tees/"
-#     download_path = "images/PacsunImages"  # The directory will be created if it doesn't exist
-#     max_images = 100
-
-#     download_images(pacsun_url, download_path, max_images)
-
-
 import os
-import requests
+import time
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
-import urllib.parse as urlparse
+import requests
 
 # Set the desired user agent string
-user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36"
+user_agents = [
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Edge/95.0.1020.30 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/95.0",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Version/14.1.2 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Edge/95.0.1020.30 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/95.0",
+    ]
 
 headers = {
-    "User-Agent": user_agent,
+    "User-Agent": user_agents[5],
     "Accept-Language": "en-US,en;q=0.9",
 }
 
-def scrape_images(url, download_path):
+def scroll_to_height(driver, height):
+    driver.execute_script(f"window.scrollTo(0, {height});")
+
+def download_images(url, download_path):
     # Create the download directory if it doesn't exist
     if not os.path.exists(download_path):
         os.makedirs(download_path)
 
-    # Send an HTTP GET request to the URL
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        soup = BeautifulSoup(response.content, 'html.parser')
-        image_tags = soup.find_all('img', class_='w-100', srcset=True, src=False)
+    # Set up the Chrome WebDriver
+    driver = webdriver.Chrome()
+
+    try:
+        # Navigate to the URL
+        driver.get(url)
+
+        # Wait for the page to load (adjust the wait time as needed)
+        wait = WebDriverWait(driver, 10)
+        wait.until(EC.presence_of_element_located((By.CLASS_NAME, "w-100")))
+
+        # Scroll down to load additional images
+        # scroll_height = driver.execute_script("return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight );")
+        # while True:
+        #     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        #     time.sleep(10)  # Adjust the wait time as needed
+        #     new_scroll_height = driver.execute_script("return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight );")
+        #     if new_scroll_height == scroll_height:
+        #         # No more additional images to load, break the loop
+        #         break
+        #     else:
+        #         scroll_height = new_scroll_height
+        scroll_increment = 500  # Adjust this value to control the scrolling amount
+
+        for i in range(20):  # Perform 20 partial scrolls
+            scroll_to_height(driver, scroll_increment * i)
+            time.sleep(2)  # Add a short delay to allow the content to load before scrolling further
+            
+
+        # Now, scrape and download the images
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        images = soup.find_all('img', class_='w-100')
 
         i = 0
-        for img_tag in image_tags:
-            img_url = img_tag['srcset']
-            # Get the first image URL from the srcset (assuming the default resolution is listed first)
-            img_url = img_url.split(',')[0].strip().split(' ')[0]
+        for image in images:
+            img_url = image['src']
             print(img_url)
-
-            # If the image URL is relative, convert it to an absolute URL
-            if not img_url.startswith('http'):
-                img_url = urlparse.urljoin(url, img_url)
 
             # Download and save the image
             filename = f"image_{i}.jpg"
             image_path = os.path.join(download_path, filename)
-            img_response = requests.get(img_url)
+            img_response = requests.get(img_url, headers=headers)
             if img_response.status_code == 200:
                 with open(image_path, 'wb') as f:
                     f.write(img_response.content)
@@ -127,11 +82,13 @@ def scrape_images(url, download_path):
             else:
                 print(f"Failed to download image from URL: {img_url}")
             i += 1
-    else:
-        print(f"Failed to fetch the URL: {url}")
+
+    finally:
+        # Close the browser
+        driver.quit()
 
 if __name__ == "__main__":
-    pacsun_url = "https://www.pacsun.com/mens/graphic-tees/"
-    download_path = "images/PacsunImages"  # The directory will be created if it doesn't exist
+    ssense_url = "https://www.pacsun.com/mens/graphic-tees/"
+    download_path = "images/PacSunImages"  # The directory will be created if it doesn't exist
 
-    scrape_images(pacsun_url, download_path)
+    download_images(ssense_url, download_path)
