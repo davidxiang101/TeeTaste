@@ -21,7 +21,7 @@ user_agents = [
     ]
 
 headers = {
-    "User-Agent": user_agents[5],
+    "User-Agent": user_agents[6],
     "Accept-Language": "en-US,en;q=0.9",
 }
 
@@ -42,7 +42,7 @@ def download_images(url, download_path):
 
         # Wait for the page to load (adjust the wait time as needed)
         wait = WebDriverWait(driver, 10)
-        wait.until(EC.presence_of_element_located((By.CLASS_NAME, "w-100")))
+        wait.until(EC.presence_of_element_located((By.CLASS_NAME, "fr-ec-image__img")))
 
         # Scroll down to load additional images
         # scroll_height = driver.execute_script("return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight );")
@@ -55,7 +55,7 @@ def download_images(url, download_path):
         #         break
         #     else:
         #         scroll_height = new_scroll_height
-        scroll_increment = 100  # Adjust this value to control the scrolling amount
+        scroll_increment = 400  # Adjust this value to control the scrolling amount
 
         for i in range(40):  # Perform 20 partial scrolls
             scroll_to_height(driver, scroll_increment * i)
@@ -64,7 +64,7 @@ def download_images(url, download_path):
 
         # Now, scrape and download the images
         soup = BeautifulSoup(driver.page_source, 'html.parser')
-        images = soup.find_all('img', class_='w-100')
+        images = soup.find_all('img', class_='fr-ec-image__img')
 
         i = 0
         for image in images:
@@ -88,7 +88,7 @@ def download_images(url, download_path):
         driver.quit()
 
 if __name__ == "__main__":
-    ssense_url = "https://www.pacsun.com/mens/graphic-tees/"
-    download_path = "images/PacSunImages"  # The directory will be created if it doesn't exist
+    uniqloUrl = "https://www.uniqlo.com/us/en/men/tops/ut-graphic-tees"
+    download_path = "images/UniqloGraphicImages"  # The directory will be created if it doesn't exist
 
-    download_images(ssense_url, download_path)
+    download_images(uniqloUrl, download_path)
