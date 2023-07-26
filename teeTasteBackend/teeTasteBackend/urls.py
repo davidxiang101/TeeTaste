@@ -21,4 +21,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("set-cookie", views.set_session_cookie, name="set_cookie"),
     path("read-cookie", views.read_session_cookie, name="read_cookie"),
+    path("save_interaction/", views.save_interaction, name="save_interaction"),
 ]
