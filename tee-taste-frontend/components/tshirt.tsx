@@ -8,7 +8,6 @@ const TShirtComponent = () => {
         imageUrl: string;
     }
 
-    // Then use this type for your state variables
     const [tshirt1, setTShirt1] = useState<TShirt | null>(null);
     const [tshirt2, setTShirt2] = useState<TShirt | null>(null);
 
