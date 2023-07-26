@@ -11,3 +11,12 @@ class UserInteraction(models.Model):
 def get_interactions(session_id):
     interactions = UserInteraction.objects.filter(session_id=session_id)
     return list(interactions)
+
+
+class TShirt(models.Model):
+    id = models.UUIDField(primary_key=True, auto_created=True)
+    image_url = models.CharField(
+        max_length=200
+    )  # assumes image URLs are stored as strings
+
+    # ...other fields...

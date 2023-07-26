@@ -3,6 +3,27 @@ import uuid
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import UserInteraction
+from django.core import serializers
+from .models import TShirt
+import random
+
+
+def fetch_next_tshirts(request):
+    tshirt_count = TShirt.objects.count()
+    if tshirt_count >= 2:
+        random_indexes = random.sample(range(tshirt_count), 2)
+        tshirts = [TShirt.objects.all()[i] for i in random_indexes]
+        tshirts_json = serializers.serialize("json", tshirts)
+        return JsonResponse({"tshirts": tshirts_json}, safe=False)
+    else:
+        return JsonResponse(
+            {"error": "Not enough T-shirts in the database"}, status=400
+        )
+
+
+def get_interactions(session_id):
+    interactions = UserInteraction.objects.filter(session_id=session_id)
+    return list(interactions)
 
 
 @csrf_exempt
