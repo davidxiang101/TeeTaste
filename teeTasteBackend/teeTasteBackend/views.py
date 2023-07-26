@@ -8,7 +8,11 @@ from .models import UserInteraction
 @csrf_exempt
 def save_interaction(request):
     if request.method == "POST":
-        session_id = request.POST.get("session_id")
+        session_id = read_session_cookie(request)
+        if session_id is None:
+            response = set_session_cookie(request)
+            session_id = response.cookies["session_id"].value
+        # session_id = request.POST.get("session_id")
         selected_tshirt_id = request.POST.get("selected_tshirt_id")
         not_selected_tshirt_id = request.POST.get("not_selected_tshirt_id")
 
