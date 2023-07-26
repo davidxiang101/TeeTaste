@@ -3,14 +3,11 @@
 import React, { useState } from 'react';
 
 const TShirtComponent = () => {
-    const [selectedTShirt, setSelectedTShirt] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
-    const handleTShirtSelection = async (tshirtId: string) => {
-        setSelectedTShirt(tshirtId);
+    const handleTShirtSelection = async (selectedId: string, notSelectedId: string) => {
         setLoading(true);
-        // Assuming fetchNextTShirts is a function that fetches the next pair of T-shirts
-        // await fetchNextTShirts(tshirtId);
+        await selectTshirt(selectedId, notSelectedId);
         setLoading(false);
     };
 
@@ -55,11 +52,11 @@ const TShirtComponent = () => {
                             src="/tshirt1.jpg"
                             alt="T-Shirt 1"
                             className="w-64 h-auto cursor-pointer"
-                            onClick={() => handleTShirtSelection('tshirt1')}
+                            onClick={() => handleTShirtSelection('tshirt1', 'tshirt2')}
                         />
                         <button
                             className="mt-4 py-2 px-4 rounded bg-blue-500 text-white hover:bg-blue-600 transition duration-200"
-                            onClick={() => handleTShirtSelection('tshirt1')}
+                            onClick={() => handleTShirtSelection('tshirt1', 'tshirt2')}
                         >
                             Select
                         </button>
@@ -69,11 +66,11 @@ const TShirtComponent = () => {
                             src="/tshirt2.jpg"
                             alt="T-Shirt 2"
                             className="w-64 h-auto cursor-pointer"
-                            onClick={() => handleTShirtSelection('tshirt2')}
+                            onClick={() => handleTShirtSelection('tshirt2', 'tshirt1')}
                         />
                         <button
                             className="mt-4 py-2 px-4 rounded bg-blue-500 text-white hover:bg-blue-600 transition duration-200"
-                            onClick={() => handleTShirtSelection('tshirt2')}
+                            onClick={() => handleTShirtSelection('tshirt2', 'tshirt1')}
                         >
                             Select
                         </button>
