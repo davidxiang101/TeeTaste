@@ -33,7 +33,7 @@ def scrape_stockx_shoe_images(url):
     driver.implicitly_wait(10)
 
     image_urls = []
-    for x in range(5):
+    for x in range(25):
       img_elements = driver.find_elements(By.CSS_SELECTOR, 'img.chakra-image.css-kpfxlo')
       for img_element in img_elements:
         image_url = img_element.get_attribute('src')
@@ -50,7 +50,7 @@ def scrape_stockx_shoe_images(url):
     return image_urls
 
 if __name__ == "__main__":
-    stockx_url = "https://stockx.com/sneakers/most-popular"
+    stockx_url = "https://stockx.com/sneakers"
     image_urls = scrape_stockx_shoe_images(stockx_url)
 
     for idx, image_url in enumerate(image_urls, start=1):
