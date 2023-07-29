@@ -15,8 +15,4 @@ def get_interactions(session_id):
 
 class TShirt(models.Model):
     id = models.UUIDField(primary_key=True, auto_created=True)
-    image_url = models.CharField(
-        max_length=200
-    )  # assumes image URLs are stored as strings
-
-    # ...other fields...
+    image = models.ImageField(upload_to="tshirt_images/")
