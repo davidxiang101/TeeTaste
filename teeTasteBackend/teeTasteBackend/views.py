@@ -14,7 +14,7 @@ def fetch_next_shoes(request):
         random_indexes = random.sample(range(shoe_count), 2)
         shoes = [Shoe.objects.all()[i] for i in random_indexes]
         shoes_json = serializers.serialize("json", shoes)
-        return JsonResponse(shoes_json, safe=False)
+        return JsonResponse({"shoes": shoes_json}, safe=False)
     else:
         return JsonResponse(
             {"error": "Not enough T-shirts in the database"}, status=400

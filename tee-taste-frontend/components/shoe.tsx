@@ -50,9 +50,10 @@ const ShoeComponent = () => {
         }
     };
 
+    const backendApiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
     const fetchNextShoes = async () => {
         try {
-            const response = await fetch('/fetch_next_shoes/'); // replace with your actual API endpoint
+            const response = await fetch(`${backendApiUrl}/fetch_next_shoes/`);
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
