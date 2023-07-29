@@ -2,18 +2,18 @@
 
 import React, { useState } from 'react';
 
-const TShirtComponent = () => {
-    interface TShirt {
+const ShoeComponent = () => {
+    interface Shoe {
         id: string;
         imageUrl: string;
     }
 
-    const [tshirt1, setTShirt1] = useState<TShirt | null>(null);
-    const [tshirt2, setTShirt2] = useState<TShirt | null>(null);
+    const [shoe1, setShoe1] = useState<Shoe | null>(null);
+    const [shoe2, setShoe2] = useState<Shoe | null>(null);
 
     const [loading, setLoading] = useState(false);
 
-    const handleTShirtSelection = async (selectedId: string, notSelectedId: string) => {
+    const handleShoeSelection = async (selectedId: string, notSelectedId: string) => {
         setLoading(true);
         await selectTshirt(selectedId, notSelectedId);
         setLoading(false);
@@ -31,8 +31,8 @@ const TShirtComponent = () => {
                 },
                 body: new URLSearchParams({
                     session_id: sessionId,
-                    selected_tshirt_id: selectedId,
-                    not_selected_tshirt_id: notSelectedId,
+                    selected_shoe_id: selectedId,
+                    not_selected_shoe_id: notSelectedId,
                 }),
             });
 
@@ -41,7 +41,7 @@ const TShirtComponent = () => {
             }
 
             // Fetch new pair of T-shirts here
-            await fetchNextTShirts();
+            await fetchNextShoes();
 
         } catch (error) {
             console.error('Error:', error);
@@ -50,9 +50,9 @@ const TShirtComponent = () => {
         }
     };
 
-    const fetchNextTShirts = async () => {
+    const fetchNextShoes = async () => {
         try {
-            const response = await fetch('/fetch_next_tshirts/'); // replace with your actual API endpoint
+            const response = await fetch('/fetch_next_shoes/'); // replace with your actual API endpoint
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -60,10 +60,10 @@ const TShirtComponent = () => {
 
             const data = await response.json();
             // assumes the API response is an object containing an array of two T-shirt objects
-            const newTShirtPair = data.tshirts;
+            const newShoePair = data.shoes;
 
-            setTShirt1(newTShirtPair[0]);
-            setTShirt2(newTShirtPair[1]);
+            setShoe1(newShoePair[0]);
+            setShoe2(newShoePair[1]);
 
         } catch (error) {
             console.error('Error:', error);
@@ -75,32 +75,32 @@ const TShirtComponent = () => {
         <div className="flex min-h-screen bg-gray-100 justify-center items-center">
             {loading ? (
                 <div>Loading...</div>
-            ) : tshirt1 && tshirt2 ? ( // make sure both T-shirts are loaded
+            ) : shoe1 && shoe2 ? ( // make sure both T-shirts are loaded
                 <div className="flex space-x-8 shadow-lg p-8 rounded bg-white">
                     <div className="flex flex-col items-center">
                         <img
-                            src={tshirt1.imageUrl} // Use T-shirt's imageUrl for src
-                            alt={`T-Shirt ${tshirt1.id}`} // Use T-shirt's id for alt
+                            src={shoe1.imageUrl} // Use T-shirt's imageUrl for src
+                            alt={`T-Shirt ${shoe1.id}`} // Use T-shirt's id for alt
                             className="w-64 h-auto cursor-pointer"
-                            onClick={() => handleTShirtSelection(tshirt1.id, tshirt2.id)} // Use T-shirt's ids for selection
+                            onClick={() => handleShoeSelection(shoe1.id, shoe2.id)} // Use T-shirt's ids for selection
                         />
                         <button
                             className="mt-4 py-2 px-4 rounded bg-blue-500 text-white hover:bg-blue-600 transition duration-200"
-                            onClick={() => handleTShirtSelection(tshirt1.id, tshirt2.id)} // Use T-shirt's ids for selection
+                            onClick={() => handleShoeSelection(shoe1.id, shoe2.id)} // Use T-shirt's ids for selection
                         >
                             Select
                         </button>
                     </div>
                     <div className="flex flex-col items-center">
                         <img
-                            src={tshirt2.imageUrl} // Use T-shirt's imageUrl for src
-                            alt={`T-Shirt ${tshirt2.id}`} // Use T-shirt's id for alt
+                            src={shoe2.imageUrl} // Use T-shirt's imageUrl for src
+                            alt={`T-Shirt ${shoe2.id}`} // Use T-shirt's id for alt
                             className="w-64 h-auto cursor-pointer"
-                            onClick={() => handleTShirtSelection(tshirt2.id, tshirt1.id)} // Use T-shirt's ids for selection
+                            onClick={() => handleShoeSelection(shoe2.id, shoe1.id)} // Use T-shirt's ids for selection
                         />
                         <button
                             className="mt-4 py-2 px-4 rounded bg-blue-500 text-white hover:bg-blue-600 transition duration-200"
-                            onClick={() => handleTShirtSelection(tshirt2.id, tshirt1.id)} // Use T-shirt's ids for selection
+                            onClick={() => handleShoeSelection(shoe2.id, shoe1.id)} // Use T-shirt's ids for selection
                         >
                             Select
                         </button>
@@ -113,4 +113,4 @@ const TShirtComponent = () => {
     );
 };
 
-export default TShirtComponent;
+export default ShoeComponent;

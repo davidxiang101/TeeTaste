@@ -1,10 +1,10 @@
 import React from 'react';
-import TShirtComponent from '../components/tshirt';
+import ShoeComponent from '../components/shoe';
 
 const Home = () => {
   return (
     <div>
-      <TShirtComponent />
+      <ShoeComponent />
     </div>
   );
 };

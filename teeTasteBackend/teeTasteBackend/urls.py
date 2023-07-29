@@ -20,5 +20,5 @@ from . import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("save_interaction/", views.save_interaction, name="save_interaction"),
-    path("fetch_next_tshirts/", views.fetch_next_tshirts, name="fetch_next_tshirts"),
+    path("fetch_next_shoes/", views.fetch_next_shoes, name="fetch_next_shoes"),
 ]
