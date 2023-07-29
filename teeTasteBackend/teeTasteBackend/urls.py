@@ -16,9 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("save_interaction/", views.save_interaction, name="save_interaction"),
     path("fetch_next_shoes/", views.fetch_next_shoes, name="fetch_next_shoes"),
 ]
+
+# Serve media files during development
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

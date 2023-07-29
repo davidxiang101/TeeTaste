@@ -1,13 +1,12 @@
 import os
 import django
 
-os.environ["DJANGO_SETTINGS_MODULE"] = "teeTasteBackend.settings"
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "teeTasteBackend.settings")
 django.setup()
 
 from django.core.files import File
 from teeTasteBackend.models import Shoe
 
-# Replace with your actual directory
 image_dir = "teeTasteBackend/webscrapers/images/StockXShoesImages"
 
 for filename in os.listdir(image_dir):
