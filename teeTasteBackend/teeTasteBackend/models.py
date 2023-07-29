@@ -14,5 +14,5 @@ def get_interactions(session_id):
 
 
 class Shoe(models.Model):
-    id = models.UUIDField(primary_key=True, auto_created=True)
     image = models.ImageField(upload_to="shoe_images/")
+
