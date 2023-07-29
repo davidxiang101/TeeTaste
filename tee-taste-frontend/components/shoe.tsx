@@ -4,8 +4,10 @@ import React, { useState, useEffect } from 'react';
 
 const ShoeComponent = () => {
     interface Shoe {
-        id: string;
-        imageUrl: string;
+        pk: string;
+        fields: {
+            image: string;
+        };
     }
 
     const [shoe1, setShoe1] = useState<Shoe | null>(null);
@@ -60,16 +62,21 @@ const ShoeComponent = () => {
             }
 
             const data = await response.json();
-            // assumes the API response is an object containing an array of two T-shirt objects
-            const newShoePair = data.shoes;
+            const shoesArray = JSON.parse(data.shoes); // Parse the 'shoes' string to an array
 
-            setShoe1(newShoePair[0]);
-            setShoe2(newShoePair[1]);
+            // Check if the parsed data is an array with at least 2 elements
+            if (Array.isArray(shoesArray) && shoesArray.length >= 2) {
+                setShoe1(shoesArray[0]);
+                setShoe2(shoesArray[1]);
+            } else {
+                console.error('Error: Not enough shoes in the API response');
+            }
 
         } catch (error) {
             console.error('Error:', error);
         }
     };
+
 
     useEffect(() => {
         console.log("fetching");
@@ -85,28 +92,28 @@ const ShoeComponent = () => {
                 <div className="flex space-x-8 shadow-lg p-8 rounded bg-white">
                     <div className="flex flex-col items-center">
                         <img
-                            src={shoe1.imageUrl} // Use T-shirt's imageUrl for src
-                            alt={`T-Shirt ${shoe1.id}`} // Use T-shirt's id for alt
+                            src={shoe1.fields.image} // Use T-shirt's imageUrl for src
+                            alt={`T-Shirt ${shoe1.pk}`} // Use T-shirt's id for alt
                             className="w-64 h-auto cursor-pointer"
-                            onClick={() => handleShoeSelection(shoe1.id, shoe2.id)} // Use T-shirt's ids for selection
+                            onClick={() => handleShoeSelection(shoe1.pk, shoe2.pk)} // Use T-shirt's ids for selection
                         />
                         <button
                             className="mt-4 py-2 px-4 rounded bg-blue-500 text-white hover:bg-blue-600 transition duration-200"
-                            onClick={() => handleShoeSelection(shoe1.id, shoe2.id)} // Use T-shirt's ids for selection
+                            onClick={() => handleShoeSelection(shoe1.pk, shoe2.pk)} // Use T-shirt's ids for selection
                         >
                             Select
                         </button>
                     </div>
                     <div className="flex flex-col items-center">
                         <img
-                            src={shoe2.imageUrl} // Use T-shirt's imageUrl for src
-                            alt={`T-Shirt ${shoe2.id}`} // Use T-shirt's id for alt
+                            src={shoe2.fields.image} // Use T-shirt's imageUrl for src
+                            alt={`T-Shirt ${shoe2.pk}`} // Use T-shirt's id for alt
                             className="w-64 h-auto cursor-pointer"
-                            onClick={() => handleShoeSelection(shoe2.id, shoe1.id)} // Use T-shirt's ids for selection
+                            onClick={() => handleShoeSelection(shoe2.pk, shoe1.pk)} // Use T-shirt's ids for selection
                         />
                         <button
                             className="mt-4 py-2 px-4 rounded bg-blue-500 text-white hover:bg-blue-600 transition duration-200"
-                            onClick={() => handleShoeSelection(shoe2.id, shoe1.id)} // Use T-shirt's ids for selection
+                            onClick={() => handleShoeSelection(shoe2.pk, shoe1.pk)} // Use T-shirt's ids for selection
                         >
                             Select
                         </button>
