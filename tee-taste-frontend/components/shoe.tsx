@@ -62,12 +62,20 @@ const ShoeComponent = () => {
             }
 
             const data = await response.json();
-            const shoesArray = JSON.parse(data.shoes); // Parse the 'shoes' string to an array
+            const shoesArray = JSON.parse(data.shoes);
 
-            // Check if the parsed data is an array with at least 2 elements
             if (Array.isArray(shoesArray) && shoesArray.length >= 2) {
-                setShoe1(shoesArray[0]);
-                setShoe2(shoesArray[1]);
+                // Convert the relative image URLs to absolute URLs
+                const absoluteShoesArray = shoesArray.map((shoe) => ({
+                    ...shoe,
+                    fields: {
+                        ...shoe.fields,
+                        image: `${backendApiUrl}/media/${shoe.fields.image}`,
+                    },
+                }));
+
+                setShoe1(absoluteShoesArray[0]);
+                setShoe2(absoluteShoesArray[1]);
             } else {
                 console.error('Error: Not enough shoes in the API response');
             }
