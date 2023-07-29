@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const ShoeComponent = () => {
     interface Shoe {
@@ -69,6 +69,11 @@ const ShoeComponent = () => {
             console.error('Error:', error);
         }
     };
+
+    useEffect(() => {
+        console.log("fetching");
+        fetchNextShoes();
+    }, []);
 
 
     return (
