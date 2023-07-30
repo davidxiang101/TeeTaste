@@ -21,12 +21,14 @@ const ShoeComponent = () => {
         setLoading(false);
     };
 
+    const backendApiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
+
     const selectTshirt = async (selectedId: string, notSelectedId: string) => {
         setLoading(true);
         const sessionId = document.cookie.split('=')[1]; // assumes the session ID is the only cookie
 
         try {
-            const response = await fetch('/save_interaction/', {
+            const response = await fetch(`${backendApiUrl}/save_interaction/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -52,7 +54,7 @@ const ShoeComponent = () => {
         }
     };
 
-    const backendApiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
+
     const fetchNextShoes = async () => {
         try {
             const response = await fetch(`${backendApiUrl}/fetch_next_shoes/`);
