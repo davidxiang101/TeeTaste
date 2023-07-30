@@ -5,21 +5,36 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import UserInteraction
 from django.core import serializers
 from .models import Shoe
+from .utils import calculate_similarity, process_image
 import random
 
 
 def fetch_next_shoes(request):
     shoe_count = Shoe.objects.count()
     if shoe_count >= 2:
-        random_indexes = random.sample(range(shoe_count), 2)
-        shoes = [Shoe.objects.all()[i] for i in random_indexes]
-        shoes_json = serializers.serialize("json", shoes)
+        # Select a random shoe as the query shoe
+        query_shoe = random.choice(Shoe.objects.all())
+        # Calculate similarity with other shoes based on features (content-based filtering)
+        similar_shoes = []
+        for shoe in Shoe.objects.exclude(pk=query_shoe.pk):
+            # Process the images and get their features
+            shoe1_features = process_image(query_shoe.image.path)
+            shoe2_features = process_image(shoe.image.path)
+
+            similarity_score = calculate_similarity(shoe1_features, shoe2_features)
+            similar_shoes.append((shoe, similarity_score))
+        
+        # Sort shoes based on similarity score in descending order
+        similar_shoes.sort(key=lambda x: x[1], reverse=True)
+        # Get the top 2 most similar shoes
+        selected_shoes = [shoe[0] for shoe in similar_shoes[:2]]
+
+        shoes_json = serializers.serialize("json", selected_shoes)
         return JsonResponse({"shoes": shoes_json}, safe=False)
     else:
         return JsonResponse(
             {"error": "Not enough T-shirts in the database"}, status=400
         )
-
 
 def get_interactions(session_id):
     interactions = UserInteraction.objects.filter(session_id=session_id)
