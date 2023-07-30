@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import UserInteraction
 from django.core import serializers
 from .models import Shoe
-from .utils import calculate_similarity, process_image
+from .feature_extraction import calculate_similarity, process_image
 import random
 
 
@@ -23,7 +23,7 @@ def fetch_next_shoes(request):
 
             similarity_score = calculate_similarity(shoe1_features, shoe2_features)
             similar_shoes.append((shoe, similarity_score))
-        
+
         # Sort shoes based on similarity score in descending order
         similar_shoes.sort(key=lambda x: x[1], reverse=True)
         # Get the top 2 most similar shoes
@@ -35,6 +35,7 @@ def fetch_next_shoes(request):
         return JsonResponse(
             {"error": "Not enough T-shirts in the database"}, status=400
         )
+
 
 def get_interactions(session_id):
     interactions = UserInteraction.objects.filter(session_id=session_id)
