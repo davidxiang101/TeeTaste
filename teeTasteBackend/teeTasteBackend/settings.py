@@ -133,3 +133,5 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Replace this with the domain where your Next.js frontend is hosted
     "http://localhost:3001",
 ]
+
+AUTH_USER_MODEL = 'teeTasteBackend.User'

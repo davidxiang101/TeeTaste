@@ -7,6 +7,51 @@ from django.core import serializers
 from .models import Shoe
 import random
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import User
+
+from django.contrib.auth import login
+
+class UserAuthenticationView(APIView):
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+
+        try:
+            user = User.objects.get(username=username)
+            if user.check_password(password):
+                # Password matches
+                login(request, user)  # Log the user in (optional)
+                return Response({'message': 'User authenticated', 'user_id': user.id})
+            else:
+                # Password does not match
+                return Response({'message': 'Authentication failed'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        except User.DoesNotExist:
+            # User does not exist
+            return Response({'message': 'Authentication failed'}, status=status.HTTP_401_UNAUTHORIZED)
+
+class CreateUserView(APIView):
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        email = request.data.get('email')
+
+        # Check if a user with the given username already exists
+        if User.objects.filter(username=username).exists():
+            return Response({'message': 'Username already exists'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Create the user
+        user = User.objects.create_user(username=username, password=password, email=email)
+
+        # Optionally, you can log in the user after creation
+        # (You'll need to have the appropriate authentication backend configured)
+        # from django.contrib.auth import login
+        # login(request, user)
+
+        return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
 
 def fetch_next_shoes(request):
     shoe_count = Shoe.objects.count()
@@ -62,3 +107,5 @@ def read_session_cookie(request):
         return HttpResponse(f"Session ID is: {session_id}")
     else:
         return HttpResponse("No session cookie found.")
+
+

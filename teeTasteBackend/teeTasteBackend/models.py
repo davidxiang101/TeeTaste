@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 
 class UserInteraction(models.Model):
@@ -16,3 +17,9 @@ def get_interactions(session_id):
 class Shoe(models.Model):
     image = models.ImageField(upload_to="shoe_images/")
 
+class User(AbstractUser):
+    is_manager = models.BooleanField(default=False)
+    is_employee = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.username
