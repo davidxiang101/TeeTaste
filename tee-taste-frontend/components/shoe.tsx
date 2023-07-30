@@ -17,13 +17,13 @@ const ShoeComponent = () => {
 
     const handleShoeSelection = async (selectedId: string, notSelectedId: string) => {
         setLoading(true);
-        await selectTshirt(selectedId, notSelectedId);
+        await selectShoe(selectedId, notSelectedId);
         setLoading(false);
     };
 
     const backendApiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
 
-    const selectTshirt = async (selectedId: string, notSelectedId: string) => {
+    const selectShoe = async (selectedId: string, notSelectedId: string) => {
         setLoading(true);
         const sessionId = document.cookie.split('=')[1]; // assumes the session ID is the only cookie
 
