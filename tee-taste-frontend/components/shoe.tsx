@@ -44,7 +44,6 @@ const ShoeComponent = () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            // Fetch new pair of T-shirts here
             await fetchNextShoes();
 
         } catch (error) {
