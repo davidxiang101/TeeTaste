@@ -76,7 +76,7 @@ cd TeeTaste
 
 - Load T-shirt images to your database using the provided script:
   ```
-  python load_images_to_database.py
+  python import_images.py
   ```
 
 4. **Run the servers**:
