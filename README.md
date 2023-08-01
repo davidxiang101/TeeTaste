@@ -26,13 +26,13 @@ TeeTaste uses a combination of machine learning techniques to provide a fun and 
 
    By using cosine similarity, we can effectively determine how similar two T-shirts are based on their visual features.
 
-In this way, TeeTaste combines these techniques to provide an interactive tool that adapts to your T-shirt preferences and provides increasingly tailored recommendations.
-
 3. **Approximate Nearest Neighbors**:
 
    After transforming all T-shirt images into feature vectors, we want to find the ones that are most similar to a selected T-shirt. For this, we use a technique called Approximate Nearest Neighbors (ANN).
 
    ANN allows us to quickly search through our dataset for vectors that are close to a given vector. The way we determine "closeness" is by using a measure called cosine similarity.
+
+In this way, TeeTaste combines these techniques to provide an interactive tool that adapts to your T-shirt preferences and provides increasingly tailored recommendations.
 
 
 
