@@ -40,7 +40,9 @@ In this way, TeeTaste combines these techniques to provide an interactive tool t
 
 ## Technologies Used
 Frontend: Next, Tailwind
+
 Backend: Django
+
 Database: SQLite (Local development), PostgreSQL (Production)
 
 ## Set Up
