@@ -1,11 +1,11 @@
 from selenium import webdriver
 import os
-import urllib
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 import requests
 import time
 import random
+from selenium.webdriver.common.action_chains import ActionChains
 
 folderName = "images/StockXShoesImages"
 user_agents = [
@@ -32,17 +32,26 @@ def slow_scroll_to_bottom(driver):
     final_height = driver.execute_script("return document.body.scrollHeight")
 
     while final_height != initial_height:
+        # Calculate the scroll amount (randomize it a bit for a more natural scroll)
+        scroll_amount = random.randint(300, 500)
+
         # Slow scroll to the bottom of the page
         driver.execute_script(f"window.scrollTo(0, {initial_height});")
-        time.sleep(1.5)  # Add a delay between each scroll action
+        time.sleep(
+            random.uniform(1.0, 2.5)
+        )  # Add a random delay between each scroll action
 
         # Update the initial_height with the current scroll position
         initial_height = driver.execute_script(
-            "return Math.min(window.pageYOffset + 100, document.body.scrollHeight);"
+            f"return Math.min(window.pageYOffset + {scroll_amount}, document.body.scrollHeight);"
         )
 
         # Update the final_height in case the content dynamically loads and increases the page height
         final_height = driver.execute_script("return document.body.scrollHeight")
+
+        # Check if we are already near the bottom of the page
+        if initial_height >= final_height - 1000:
+            break
 
 
 def scrape_stockx_shoe_images(url):
@@ -69,13 +78,29 @@ def scrape_stockx_shoe_images(url):
                 unique_images.add(image_url)
 
         slow_scroll_to_bottom(driver)
+        next_button = driver.find_element(By.XPATH, '//a[@aria-label="Next"]')
 
-        try:
-            print("Clicking on the Next button...")
-            next_button = driver.find_element(By.XPATH, '//a[@aria-label="Next"]')
-            next_button.click()
+        while True:
+            # Check if the "Next" button is in the viewport
+            if next_button.is_displayed():
+                # Perform a mouse click on the "Next" button
+                actions = ActionChains(driver)
+                actions.move_to_element(next_button).click().perform()
+            else:
+                # Scroll to the "Next" button if it is not in the viewport
+                driver.execute_script("arguments[0].scrollIntoView();", next_button)
+                actions = ActionChains(driver)
+                actions.move_to_element(next_button).click().perform()
+
             driver.implicitly_wait(10)
-        except:
+
+            # Your existing code for scraping images
+
+            try:
+                print("Scrolling...")
+                next_button = driver.find_element(By.XPATH, '//a[@aria-label="Next"]')
+            except:
+                print("End of page.")
             print("Next button not found or reached the last page.")
             break
 
