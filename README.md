@@ -6,6 +6,37 @@ TeeTaste is a personalized T-shirt recommendation engine. It allows users to vot
 
 The motivation behind this project is to use modern machine learning techniques to enhance the user's shopping experience by creating a recommendation system based on a user's individual tastes and preferences. It is designed to be an enjoyable and interactive way of discovering new T-shirts without having to manually search through the entire product catalog.
 
+## How TeeTaste Finds Similar T-Shirts
+
+TeeTaste uses a combination of machine learning techniques to provide a fun and interactive way to discover T-shirts that match your taste. The following is a high-level overview of the process:
+
+1. **Feature Extraction**:
+
+   TeeTaste uses a technique known as feature extraction to represent each T-shirt image as a numerical vector. It does this by leveraging a pre-trained deep learning model called ResNet.
+
+   ResNet, short for Residual Network, is a type of Convolutional Neural Network (CNN) that has been trained on a massive dataset (ImageNet). It has learned to recognize various low-level features (like lines, curves, colors) and high-level features (like shapes, objects) from this dataset.
+
+   We use ResNet to process each of our T-shirt images. The output is a feature vector that represents the key visual characteristics of the T-shirt. These feature vectors serve as input for the next step.
+   
+2. **Cosine Similarity**:
+
+   Cosine similarity is a measure of similarity between two non-zero vectors of an inner product space that measures the cosine of the angle between them. The cosine of 0° is 1, and it is less than 1 for any angle in the interval (0, π] radians. 
+
+   It is thus a judgment of orientation and not magnitude: two vectors with the same orientation have a cosine similarity of 1, two vectors at 90° have a similarity of 0, and two vectors diametrically opposed have a similarity of -1, independent of their magnitude. 
+
+   By using cosine similarity, we can effectively determine how similar two T-shirts are based on their visual features.
+
+In this way, TeeTaste combines these techniques to provide an interactive tool that adapts to your T-shirt preferences and provides increasingly tailored recommendations.
+
+3. **Approximate Nearest Neighbors**:
+
+   After transforming all T-shirt images into feature vectors, we want to find the ones that are most similar to a selected T-shirt. For this, we use a technique called Approximate Nearest Neighbors (ANN).
+
+   ANN allows us to quickly search through our dataset for vectors that are close to a given vector. The way we determine "closeness" is by using a measure called cosine similarity.
+
+
+
+
 
 ## Technologies Used
 Frontend: Next, Tailwind
@@ -52,10 +83,10 @@ cd TeeTaste
   ```
   python manage.py runserver
   ```
-- For the React frontend:
+- For the NextJS frontend:
   ```
-  cd client
-  npm start
+  cd tee-taste-frontend
+  npm run dev
   ```
 
 The application will be available at `http://localhost:3000`.
