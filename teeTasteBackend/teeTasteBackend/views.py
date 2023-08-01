@@ -12,26 +12,34 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import User
 
-from django.contrib.auth import login
+from django.contrib.auth import authenticate, login
 
 class UserAuthenticationView(APIView):
     def post(self, request):
-        username = request.data.get('username')
-        password = request.data.get('password')
+        if request.method == "POST":
+        # Get the username and password from the request
+            username = request.POST.get("username")
+            password = request.POST.get("password")
 
-        try:
-            user = User.objects.get(username=username)
-            if user.check_password(password):
-                # Password matches
-                login(request, user)  # Log the user in (optional)
-                return Response({'message': 'User authenticated', 'user_id': user.id})
+            # Authenticate the user
+            user = authenticate(request, username=username, password=password)
+            if (request.user.is_authenticated):
+                print("user is authenticated")
             else:
-                # Password does not match
-                return Response({'message': 'Authentication failed'}, status=status.HTTP_401_UNAUTHORIZED)
+                print("user is not authenticated")
+                
+            if user is not None:
+                # User is authenticated, log them in
+                login(request, user)
+                print(request.user)
+                # At this point, request.user should be populated with the authenticated user
 
-        except User.DoesNotExist:
-            # User does not exist
-            return Response({'message': 'Authentication failed'}, status=status.HTTP_401_UNAUTHORIZED)
+                # Your success response or redirect logic here
+                return JsonResponse({"success": True})
+            else:
+                print("invalid user")
+                # Invalid credentials, handle the error response here
+                return JsonResponse({"success": False, "error": "Invalid credentials"})
 
 class CreateUserView(APIView):
     def post(self, request):
@@ -49,7 +57,7 @@ class CreateUserView(APIView):
         # Optionally, you can log in the user after creation
         # (You'll need to have the appropriate authentication backend configured)
         # from django.contrib.auth import login
-        # login(request, user)
+        login(request, user)
 
         return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
 
@@ -82,10 +90,22 @@ def save_interaction(request):
         selected_shoe_id = request.POST.get("selected_shoe_id")
         not_selected_shoe_id = request.POST.get("not_selected_shoe_id")
 
+        user = request.user
+        print(user)
+        # Ensure the user is authenticated before accessing request.user
+        if request.user.is_authenticated:
+            user = request.user
+        else:
+            # Handle the case when the user is not authenticated
+            # user = None  # Or set it to a default user or handle it differently based on your requirements
+            print("no user found")
+            return JsonResponse({"error": "No user attached"}, status=400)
+
         interaction = UserInteraction(
             session_id=session_id,
             selected_shoe_id=selected_shoe_id,
             not_selected_shoe_id=not_selected_shoe_id,
+            user=user,
         )
         interaction.save()
 
