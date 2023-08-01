@@ -60,9 +60,9 @@ cd TeeTaste
   ```
   pip install -r requirements.txt
   ```
-- For the React frontend:
+- For the NextJS frontend:
   ```
-  cd client
+  cd tee-taste-frontend
   npm install
   ```
 
