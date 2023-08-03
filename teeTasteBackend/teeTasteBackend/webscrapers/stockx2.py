@@ -62,6 +62,8 @@ if __name__ == "__main__":
     num_pages = 10
     image_urls = scrape_stockx_shoe_images(stockx_url_base, num_pages)
 
+    print("starting scrape")
+
     for idx, image_url in enumerate(image_urls, start=1):
         time.sleep(random.uniform(2.0, 5.5))  # Add a random delay between each download
         idx = idx
