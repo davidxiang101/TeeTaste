@@ -17,7 +17,7 @@ for shoe in Shoe.objects.all():
     t.add_item(shoe.pk, shoe.get_feature_vector())
 
 # Build a tree for the index - increase the number of trees for more precision
-t.build(10)
+t.build(3)
 
 
 # Use the index in your view
@@ -29,7 +29,7 @@ def fetch_next_shoes(request):
 
         # Find the 10 most similar shoes
         indices, distances = t.get_nns_by_vector(
-            query_shoe.get_feature_vector(), 10, include_distances=True
+            query_shoe.get_feature_vector(), 6, include_distances=True
         )
 
         # Fetch the actual Shoe instances along with their distances
