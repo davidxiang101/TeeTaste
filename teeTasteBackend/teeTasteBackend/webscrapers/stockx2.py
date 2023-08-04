@@ -1,42 +1,40 @@
+from bs4 import BeautifulSoup
 import requests
-import json
+import os
 
 
-def search():
-    url = "https://stockx.com/sneakers"
+def save_image_from_url(image_url, destination_folder, image_name):
+    if not os.path.exists(destination_folder):
+        os.makedirs(destination_folder)
 
+    response = requests.get(image_url, stream=True)
+    response.raise_for_status()
+
+    filename = os.path.join(destination_folder, image_name + ".jpg")
+
+    with open(filename, "wb") as out_file:
+        out_file.write(response.content)
+    print(f"Saved image {filename}")
+
+
+def scrape_stockx_images(page_url, destination_folder):
     headers = {
-        "accept": "application/json",
-        "accept-encoding": "utf-8",
-        "accept-language": "en-GB,en;q=0.9",
-        "sec-fetch-dest": "empty",
-        "sec-fetch-mode": "cors",
-        "sec-fetch-site": "same-origin",
-        "user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1",
-        "x-requested-with": "XMLHttpRequest",
-        "app-platform": "Iron",
-        "app-version": "2022.05.08.04",
-        "referer": "https://stockx.com/",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36",
     }
+    response = requests.get(page_url, headers=headers)
+    soup = BeautifulSoup(response.text, "html.parser")
 
-    response = requests.get(url=url, headers=headers)
-    if response.status_code != 200:
-        print(f"Request to {url} returned status code {response.status_code}")
-        return str(response.status_code)
-    try:
-        output = json.loads(response.text)
-    except json.JSONDecodeError:
-        print(f"Couldn't decode response as JSON: {response.text}")
-        return "couldn't decode as JSON"
-    if "Products" in output and len(output["Products"]) > 0:
-        return output["Products"][0]
-    else:
-        print("No products in response")
-        return "No products in response"
+    img_tags = soup.find_all("img", class_="chakra-image")
+
+    downloaded_images = set()
+    counter = 1
+    for img in img_tags:
+        image_url = img.get("src")
+        if image_url not in downloaded_images:
+            image_name = "sneaker" + str(counter)
+            save_image_from_url(image_url, destination_folder, image_name)
+            downloaded_images.add(image_url)
+            counter += 1
 
 
-item = search()
-print(item)
-if item is not None:
-    url = item["media"]["imageUrl"]
-    print(url)
+scrape_stockx_images("https://stockx.com/sneakers", "sneaker_images")
