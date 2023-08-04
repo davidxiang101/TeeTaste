@@ -8,7 +8,7 @@ from django.core.files import File
 from teeTasteBackend.models import Shoe
 from teeTasteBackend.feature_extraction import process_image
 
-image_dir = "teeTasteBackend/webscrapers/images/StockXShoesImages"
+image_dir = "teeTasteBackend/webscrapers/images/sneakers"
 
 for filename in os.listdir(image_dir):
     if filename.endswith(".jpg"):  # assuming you have only .jpg images
