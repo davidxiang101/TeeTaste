@@ -21,7 +21,7 @@ user_agents = [
     ]
 
 headers = {
-    "User-Agent": user_agents[5],
+    "User-Agent": user_agents[7],
     "Accept-Language": "en-US,en;q=0.9",
 }
 
@@ -46,7 +46,7 @@ def download_images(url, download_path, output_file):
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         div_tags = soup.find_all('div', class_='css-tkc8ar')
 
-        i = 120
+        i = 360
         for div_tag in div_tags:
             img_url = div_tag.find('img').get('src')
             if img_url:
@@ -75,7 +75,7 @@ def download_images(url, download_path, output_file):
 
 if __name__ == "__main__":
     # ssense_url = "https://www.ssense.com/en-us/men/tops"
-    stockX = "https://stockx.com/sneakers?page=4"
+    stockX = "https://stockx.com/sneakers?page=10"
     download_path = "images/sneakers"  # The directory will be created if it doesn't exist
     output_file = "sneakers.txt"
     download_images(stockX, download_path, output_file)
