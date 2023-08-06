@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { Loading } from '../components/loading';
 
 const ShoeComponent = () => {
     interface Shoe {
@@ -96,9 +97,7 @@ const ShoeComponent = () => {
     return (
         <div className="flex min-h-screen bg-gray-100 justify-center items-center">
             {loading ? (
-                <div>
-                    <p font-slate-100>Loading...</p>
-                </div>
+                <Loading></Loading>
             ) : shoe1 && shoe2 ? ( // make sure both T-shirts are loaded
                 <div className="flex space-x-8 shadow-lg p-8 rounded bg-white">
                     <div className="flex flex-col items-center">
