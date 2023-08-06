@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Loading } from '../components/loading';
+import Loading from '../components/loading';
 
 const ShoeComponent = () => {
     interface Shoe {
@@ -130,6 +130,7 @@ const ShoeComponent = () => {
                     </div>
                 </div>
             ) : (
+
                 <div>No T-Shirts found...</div>
             )}
         </div>
