@@ -96,7 +96,9 @@ const ShoeComponent = () => {
     return (
         <div className="flex min-h-screen bg-gray-100 justify-center items-center">
             {loading ? (
-                <div>Loading...</div>
+                <div>
+                    <p font-slate-100>Loading...</p>
+                </div>
             ) : shoe1 && shoe2 ? ( // make sure both T-shirts are loaded
                 <div className="flex space-x-8 shadow-lg p-8 rounded bg-white">
                     <div className="flex flex-col items-center">
