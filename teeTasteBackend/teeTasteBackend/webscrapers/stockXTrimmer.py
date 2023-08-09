@@ -29,7 +29,7 @@ with open('sneakersDeleted.txt', 'w') as f:
 
 directory = "images/sneakers"  # Directory containing the files
 for img_number in dupImgs:
-    filename = f"image_{img_number}.jpg"
+    filename = f"image_{img_number}.png"
     file_path = os.path.join(directory, filename)
 
     try:

@@ -47,7 +47,7 @@ def download_images(url, download_path, output_file):
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         div_tags = soup.find_all('div', class_='css-tkc8ar')
 
-        i = 840
+        i = 960
         for div_tag in div_tags:
             img_url = div_tag.find('img').get('src')
             if img_url:
@@ -85,7 +85,7 @@ def download_images(url, download_path, output_file):
         driver.quit()
 
 if __name__ == "__main__":
-    stockX = "https://stockx.com/sneakers?page=1"
+    stockX = "https://stockx.com/sneakers?page=25"
     download_path = "images/sneakers"  # The directory will be created if it doesn't exist
     output_file = "sneakers.txt"
     download_images(stockX, download_path, output_file)
