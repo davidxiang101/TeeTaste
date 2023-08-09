@@ -9,10 +9,10 @@ from django.core.files import File
 from teeTasteBackend.models import Shoe
 from teeTasteBackend.feature_extraction import process_image
 
-image_dir = "teeTasteBackend/webscrapers/sneakers"
+image_dir = "teeTasteBackend/webscrapers/images/sneakers"
 
 for filename in os.listdir(image_dir):
-    if filename.endswith(".jpg"):  # assuming you have only .jpg images
+    if filename.endswith(".png"):  # assuming you have only .jpg images
         # Check if a Shoe with this image already exists
         if not Shoe.objects.filter(image=filename).exists():
             with open(os.path.join(image_dir, filename), "rb") as f:
