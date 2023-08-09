@@ -32,6 +32,8 @@ TeeTaste uses a combination of machine learning techniques to provide a fun and 
 
    ANN allows us to quickly search through our dataset for vectors that are close to a given vector. The way we determine "closeness" is by using a measure called cosine similarity.
 
+   By setting up ANN with additional trees, we can make ANN more precise that it would be with just one tree. We can adjust the number of trees in our ANN to determine how similar our reommendations should be to the user's selections.
+
 In this way, TeeTaste combines these techniques to provide an interactive tool that adapts to your T-shirt preferences and provides increasingly tailored recommendations.
 
 
