@@ -9,6 +9,8 @@ model = ResNet50(weights="imagenet", include_top=False)
 
 
 def process_image(shoe, save_shoe=True):
+    print("Loading image from:", shoe.image.path)
+
     img = image.load_img(shoe.image.path, target_size=(400, 400))
     x = image.img_to_array(img)
     x = np.expand_dims(x, axis=0)

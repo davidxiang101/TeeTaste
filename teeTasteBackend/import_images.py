@@ -1,5 +1,6 @@
 import os
 import django
+from PIL import Image
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "teeTasteBackend.settings")
 django.setup()
@@ -15,7 +16,6 @@ for filename in os.listdir(image_dir):
         # Check if a Shoe with this image already exists
         if not Shoe.objects.filter(image=filename).exists():
             with open(os.path.join(image_dir, filename), "rb") as f:
-                print(filename)
                 image_file = File(f)
                 shoe = Shoe()
                 shoe.image.save(filename, image_file, save=False)  # Don't save yet
