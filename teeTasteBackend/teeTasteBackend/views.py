@@ -17,7 +17,7 @@ for shoe in Shoe.objects.all():
     t.add_item(shoe.pk, shoe.get_feature_vector())
 
 # Build a tree for the index - increase the number of trees for more precision
-t.build(3)
+t.build(2)
 
 
 # Use the index in your view
