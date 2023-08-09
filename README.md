@@ -2,7 +2,7 @@
 👕🚀 An AI-powered T-shirt and Sneaker recommendation engine built with NextJS, Django and TensorFlow.
 
 ## Overview
-TeeTaste is a personalized T-shirt recommendation engine. It allows users to vote between two T-shirts, and based on the user's preferences, it will recommend a new pair of T-shirts to vote on. The aim is to create a more interactive and personalized shopping experience for T-shirt enthusiasts, reducing the cognitive load of choosing from hundreds of T-shirts.
+TeeTaste is a personalized T-shirt and Sneaker recommendation engine. It allows users to vote between two T-shirts, and based on the user's preferences, it will recommend a new pair of T-shirts to vote on. The aim is to create a more interactive and personalized shopping experience for T-shirt enthusiasts and Sneaker heads, reducing the cognitive load of choosing from hundreds of T-shirts.
 
 The motivation behind this project is to use modern machine learning techniques to enhance the user's shopping experience by creating a recommendation system based on a user's individual tastes and preferences. It is designed to be an enjoyable and interactive way of discovering new T-shirts without having to manually search through the entire product catalog.
 
