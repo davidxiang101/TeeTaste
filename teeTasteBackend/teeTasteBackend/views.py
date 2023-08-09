@@ -29,7 +29,7 @@ def fetch_next_shoes(request):
 
         # Find the 10 most similar shoes
         indices, distances = t.get_nns_by_vector(
-            query_shoe.get_feature_vector(), 6, include_distances=True
+            query_shoe.get_feature_vector(), 10, include_distances=True
         )
 
         # Fetch the actual Shoe instances along with their distances
