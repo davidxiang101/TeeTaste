@@ -47,6 +47,8 @@ Backend: Django
 
 Database: SQLite (Local development), PostgreSQL (Production)
 
+Misc: Keras, Tensorflow, ANNOY
+
 ## Set Up
 Here are the steps to set up the project locally for development:
 
