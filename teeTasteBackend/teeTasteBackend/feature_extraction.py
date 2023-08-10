@@ -1,4 +1,3 @@
-import os
 from keras.preprocessing import image
 from keras.applications.resnet50 import preprocess_input, ResNet50
 import numpy as np
