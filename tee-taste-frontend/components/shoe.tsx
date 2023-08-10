@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Loading from '../components/loading';
+import WelcomeComponent from './welcome';
 
 const ShoeComponent = () => {
     interface Shoe {
@@ -131,7 +132,7 @@ const ShoeComponent = () => {
                 </div>
             ) : (
 
-                <div>No T-Shirts found...</div>
+                <WelcomeComponent></WelcomeComponent>
             )}
         </div>
     );
