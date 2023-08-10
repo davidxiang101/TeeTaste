@@ -95,11 +95,11 @@ const ShoeComponent = () => {
 
 
     return (
-        <div className="flex min-h-screen bg-gray-100 justify-center items-center">
+        <div className="flex items-center justify-center min-h-screen w-full bg-gradient-to-br to-80% from-blue-700 to-purple-800 text-zinc-200">
             {loading ? (
                 <Loading></Loading>
             ) : shoe1 && shoe2 ? ( // make sure both T-shirts are loaded
-                <div className="flex space-x-8 shadow-lg p-8 rounded bg-white">
+                <div className="flex space-x-16 shadow-lg p-20 rounded bg-white">
                     <div className="flex flex-col items-center">
                         <img
                             src={shoe1.fields.image} // Use T-shirt's imageUrl for src
@@ -108,7 +108,7 @@ const ShoeComponent = () => {
                             onClick={() => handleShoeSelection(shoe1.pk, shoe2.pk)} // Use T-shirt's ids for selection
                         />
                         <button
-                            className="mt-4 py-2 px-4 rounded bg-blue-500 text-white hover:bg-blue-600 transition duration-200"
+                            className="mt-4 py-2 px-4 rounded bg-blue-700 text-zinc-200 hover:bg-blue-800 transition duration-200"
                             onClick={() => handleShoeSelection(shoe1.pk, shoe2.pk)} // Use T-shirt's ids for selection
                         >
                             Select
@@ -122,7 +122,7 @@ const ShoeComponent = () => {
                             onClick={() => handleShoeSelection(shoe2.pk, shoe1.pk)} // Use T-shirt's ids for selection
                         />
                         <button
-                            className="mt-4 py-2 px-4 rounded bg-blue-500 text-white hover:bg-blue-600 transition duration-200"
+                            className="mt-4 py-2 px-4 rounded bg-blue-700 text-zinc-200 hover:bg-blue-800 transition duration-200"
                             onClick={() => handleShoeSelection(shoe2.pk, shoe1.pk)} // Use T-shirt's ids for selection
                         >
                             Select
