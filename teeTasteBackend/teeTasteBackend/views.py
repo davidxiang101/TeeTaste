@@ -17,7 +17,7 @@ for shoe in Shoe.objects.all():
     t.add_item(shoe.pk, shoe.get_feature_vector())
 
 # Build a tree for the index - increase the number of trees for more precision
-t.build(3)
+t.build(2)
 
 
 # Use the index in your view
@@ -45,34 +45,6 @@ def fetch_next_shoes(request):
         return JsonResponse({"shoes": shoes_json}, safe=False)
     else:
         return JsonResponse({"error": "Not enough shoes in the database"}, status=400)
-
-
-# def fetch_next_shoes(request):
-#     shoe_count = Shoe.objects.count()
-#     if shoe_count >= 2:
-#         # Select a random shoe as the query shoe
-#         query_shoe = random.choice(Shoe.objects.all())
-
-#         # Calculate similarity with other shoes based on precomputed feature vectors
-#         similar_shoes = []
-#         for shoe in Shoe.objects.exclude(pk=query_shoe.pk):
-#             print("hi")
-#             # Get their precomputed features
-#             shoe1_features = query_shoe.get_feature_vector()
-#             shoe2_features = shoe.get_feature_vector()
-
-#             similarity_score = cosine_similarity([shoe1_features], [shoe2_features])
-#             similar_shoes.append((shoe, similarity_score[0][0]))
-
-#         # Sort shoes based on similarity score in descending order
-#         similar_shoes.sort(key=lambda x: x[1], reverse=True)
-#         # Get the top 2 most similar shoes
-#         selected_shoes = [shoe[0] for shoe in similar_shoes[:2]]
-
-#         shoes_json = serializers.serialize("json", selected_shoes)
-#         return JsonResponse({"shoes": shoes_json}, safe=False)
-#     else:
-#         return JsonResponse({"error": "Not enough shoes in the database"}, status=400)
 
 
 def get_interactions(session_id):
