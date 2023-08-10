@@ -130,10 +130,7 @@ const ShoeComponent = () => {
                         </button>
                     </div>
                 </div>
-            ) : (
-
-                <WelcomeComponent></WelcomeComponent>
-            )}
+            ) : <Loading></Loading>}
         </div>
     );
 };
