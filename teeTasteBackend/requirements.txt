@@ -1,5 +1,4 @@
 absl-py==1.4.0
-altgraph @ file:///System/Volumes/Data/SWE/Apps/DT/BuildRoots/BuildRoot2/ActiveBuildRoot/Library/Caches/com.apple.xbs/Sources/python3/python3-124/altgraph-0.17.2-py2.py3-none-any.whl
 annoy==1.17.3
 anyio==3.6.2
 appnope==0.1.3
