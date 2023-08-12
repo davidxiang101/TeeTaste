@@ -6,8 +6,10 @@ from .models import UserInteraction
 from django.core import serializers
 from .models import Shoe
 import random
-from sklearn.metrics.pairwise import cosine_similarity
 from annoy import AnnoyIndex
+from sklearn.metrics.pairwise import cosine_distances
+import numpy as np
+
 
 # Assuming feature vectors are of length 346112
 t = AnnoyIndex(346112, "angular")
@@ -43,6 +45,41 @@ def fetch_next_shoes(request):
 
         shoes_json = serializers.serialize("json", selected_shoes)
         return JsonResponse({"shoes": shoes_json}, safe=False)
+    else:
+        return JsonResponse({"error": "Not enough shoes in the database"}, status=400)
+
+
+MAX_RETRIES = 10  # Maximum number of times we try to get dissimilar shoes
+
+
+def fetch_random_shoes(request):
+    shoe_count = Shoe.objects.count()
+
+    if shoe_count >= 2:
+        retries = 0
+        while retries < MAX_RETRIES:
+            shoe1, shoe2 = random.sample(list(Shoe.objects.all()), 2)
+
+            # Compute cosine distance between feature vectors
+            # Note: the `get_feature_vector()` method should return the vector in a format that's
+            # compatible with cosine_distances, such as a list or numpy array.
+            distance = cosine_distances(
+                np.array([shoe1.get_feature_vector()]),
+                np.array([shoe2.get_feature_vector()]),
+            )[0][
+                0
+            ]  # extract scalar value
+
+            # You can adjust this threshold to define "dissimilarity"
+            if distance > 0.5:  # assuming distance ranges between 0 and 1
+                shoes_json = serializers.serialize("json", [shoe1, shoe2])
+                return JsonResponse({"shoes": shoes_json}, safe=False)
+
+            retries += 1
+
+        return JsonResponse(
+            {"error": "Couldn't find dissimilar shoes in the given tries"}, status=400
+        )
     else:
         return JsonResponse({"error": "Not enough shoes in the database"}, status=400)
 
