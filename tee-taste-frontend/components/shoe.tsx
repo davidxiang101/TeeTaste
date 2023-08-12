@@ -87,10 +87,41 @@ const ShoeComponent = () => {
         }
     };
 
+    const fetchRandomShoes = async () => {
+        try {
+            const response = await fetch(`${backendApiUrl}/fetch_random_shoes/`);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const shoesArray = JSON.parse(data.shoes);
+
+            if (Array.isArray(shoesArray) && shoesArray.length >= 2) {
+                // Convert the relative image URLs to absolute URLs
+                const absoluteShoesArray = shoesArray.map((shoe) => ({
+                    ...shoe,
+                    fields: {
+                        ...shoe.fields,
+                        image: `${backendApiUrl}/media/${shoe.fields.image}`,
+                    },
+                }));
+
+                setShoe1(absoluteShoesArray[0]);
+                setShoe2(absoluteShoesArray[1]);
+            } else {
+                console.error('Error: Not enough shoes in the API response');
+            }
+
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
     useEffect(() => {
         console.log("fetching");
-        fetchNextShoes();
+        fetchRandomShoes();
     }, []);
 
 

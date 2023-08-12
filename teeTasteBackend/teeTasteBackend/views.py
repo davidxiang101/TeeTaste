@@ -49,39 +49,40 @@ def fetch_next_shoes(request):
         return JsonResponse({"error": "Not enough shoes in the database"}, status=400)
 
 
-MAX_RETRIES = 10  # Maximum number of times we try to get dissimilar shoes
-
-
 def fetch_random_shoes(request):
-    shoe_count = Shoe.objects.count()
+    MAX_RETRIES = 5  # Maximum number of times we try to get dissimilar shoes
 
-    if shoe_count >= 2:
-        retries = 0
-        while retries < MAX_RETRIES:
-            shoe1, shoe2 = random.sample(list(Shoe.objects.all()), 2)
+    max_distance = 0
+    max_distance_shoes = (None, None)
 
-            # Compute cosine distance between feature vectors
-            # Note: the `get_feature_vector()` method should return the vector in a format that's
-            # compatible with cosine_distances, such as a list or numpy array.
-            distance = cosine_distances(
-                np.array([shoe1.get_feature_vector()]),
-                np.array([shoe2.get_feature_vector()]),
-            )[0][
-                0
-            ]  # extract scalar value
+    for _ in range(MAX_RETRIES):
+        shoe1, shoe2 = random.sample(list(Shoe.objects.all()), 2)
 
-            # You can adjust this threshold to define "dissimilarity"
-            if distance > 0.5:  # assuming distance ranges between 0 and 1
-                shoes_json = serializers.serialize("json", [shoe1, shoe2])
-                return JsonResponse({"shoes": shoes_json}, safe=False)
+        # Compute cosine distance between feature vectors
+        distance = cosine_distances(
+            np.array([shoe1.get_feature_vector()]),
+            np.array([shoe2.get_feature_vector()]),
+        )[0][
+            0
+        ]  # extract scalar value
 
-            retries += 1
+        # Update the max distance and corresponding shoes if this distance is greater
+        if distance > max_distance:
+            max_distance = distance
+            max_distance_shoes = (shoe1, shoe2)
 
-        return JsonResponse(
-            {"error": "Couldn't find dissimilar shoes in the given tries"}, status=400
-        )
-    else:
-        return JsonResponse({"error": "Not enough shoes in the database"}, status=400)
+        print(distance)
+        if distance > 0.5:  # assuming distance ranges between 0 and 1
+            shoes_json = serializers.serialize("json", [shoe1, shoe2])
+            return JsonResponse({"shoes": shoes_json}, safe=False)
+
+    # If we reach here, it means none of the retries were greater than the threshold.
+    # So, return the pair with the max distance found.
+    if max_distance_shoes[0] and max_distance_shoes[1]:
+        shoes_json = serializers.serialize("json", max_distance_shoes)
+        return JsonResponse({"shoes": shoes_json}, safe=False)
+
+    return JsonResponse({"error": "Couldn't find any pair of shoes"}, status=400)
 
 
 def get_interactions(session_id):
