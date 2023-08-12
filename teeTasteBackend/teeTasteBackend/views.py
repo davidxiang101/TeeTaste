@@ -56,7 +56,9 @@ def fetch_random_shoes(request):
     max_distance_shoes = (None, None)
 
     for _ in range(MAX_RETRIES):
-        shoe1, shoe2 = random.sample(list(Shoe.objects.all()), 2)
+        shoes = Shoe.objects.order_by("?")[:2]
+        shoe1 = shoes[0]
+        shoe2 = shoes[1]
 
         # Compute cosine distance between feature vectors
         distance = cosine_distances(
@@ -71,6 +73,7 @@ def fetch_random_shoes(request):
             max_distance = distance
             max_distance_shoes = (shoe1, shoe2)
 
+        # You can adjust this threshold to define "dissimilarity"
         print(distance)
         if distance > 0.5:  # assuming distance ranges between 0 and 1
             shoes_json = serializers.serialize("json", [shoe1, shoe2])
