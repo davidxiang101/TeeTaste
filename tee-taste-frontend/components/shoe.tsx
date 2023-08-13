@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import Loading from '../components/loading';
+import Loading from './loading';
+import Selections from './selections'; // Adjust the path according to your project structure
+
 
 const ShoeComponent = () => {
     interface Shoe {

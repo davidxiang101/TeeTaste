@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     "teeTasteBackend",
 ]
 
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -49,8 +51,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
 
 ROOT_URLCONF = "teeTasteBackend.urls"
@@ -133,3 +135,5 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Replace this with the domain where your Next.js frontend is hosted
     "http://localhost:3001",
 ]
+
+SESSION_COOKIE_AGE = 1209600  # seconds

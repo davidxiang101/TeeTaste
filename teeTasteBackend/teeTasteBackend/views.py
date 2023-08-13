@@ -129,3 +129,16 @@ def read_session_cookie(request):
         return HttpResponse(f"Session ID is: {session_id}")
     else:
         return HttpResponse("No session cookie found.")
+
+
+def select_shoe(request, shoe_id):
+    selected_shoes = request.session.get("selected_shoes", [])
+    selected_shoes.append(shoe_id)
+    request.session["selected_shoes"] = selected_shoes
+    return HttpResponse("Shoe selected")
+
+
+def view_selected_shoes(request):
+    selected_shoes = request.session.get("selected_shoes", [])
+    shoes = Shoe.objects.filter(id__in=selected_shoes)
+    # Now do something with the shoes, like rendering them in a template
