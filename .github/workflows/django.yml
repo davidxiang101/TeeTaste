@@ -25,7 +25,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r teeTasteBackend/requirements.txt
       - name: Apply database migrations
-        run: python teeTasteBackend/manage.py migrate
+        run: |
+          python teeTasteBackend/manage.py makemigrations
+          python teeTasteBackend/manage.py migrate
       - name: Run Tests
         run: |
           python teeTasteBackend/manage.py test
