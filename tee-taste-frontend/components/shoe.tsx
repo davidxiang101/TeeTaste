@@ -133,13 +133,12 @@ const ShoeComponent = () => {
         fetchRandomShoes();
     }, []);
 
-
     return (
-        <div className="flex flex-col justify-between items-center min-h-screen w-full bg-gradient-to-br from-blue-700 to-purple-800 text-zinc-200">
-            <div className="w-full">
+        <div className="relative min-h-screen w-full bg-gradient-to-br from-blue-700 to-purple-800 text-zinc-200">
+            <div className="absolute top-0 left-0 w-full">
                 <Selections selections={previousSelections} />
             </div>
-            <div className="flex flex-col items-center justify-center flex-grow">
+            <div className="absolute top-0 left-0 bottom-0 right-0 flex items-center justify-center">
                 {loading ? (
                     <Loading></Loading>
                 ) : shoe1 && shoe2 ? (
@@ -175,8 +174,8 @@ const ShoeComponent = () => {
                     </div>
                 ) : <Loading></Loading>}
             </div>
-            <div className="w-full h-0"></div> {/* Placeholder to keep centering */}
         </div>
     );
 };
+
 export default ShoeComponent;
