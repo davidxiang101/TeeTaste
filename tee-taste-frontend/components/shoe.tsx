@@ -135,44 +135,48 @@ const ShoeComponent = () => {
 
 
     return (
-        <div className="flex items-center justify-center min-h-screen w-full bg-gradient-to-br to-80% from-blue-700 to-purple-800 text-zinc-200">
-            <Selections selections={previousSelections} />
-            {loading ? (
-                <Loading></Loading>
-            ) : shoe1 && shoe2 ? ( // make sure both T-shirts are loaded
-                <div className="flex space-x-16 shadow-lg p-20 rounded bg-white">
-                    <div className="flex flex-col items-center">
-                        <img
-                            src={shoe1.fields.image} // Use T-shirt's imageUrl for src
-                            alt={`T-Shirt ${shoe1.pk}`} // Use T-shirt's id for alt
-                            className="w-64 h-auto cursor-pointer"
-                            onClick={() => handleShoeSelection(shoe1.pk, shoe2.pk)} // Use T-shirt's ids for selection
-                        />
-                        <button
-                            className="mt-4 py-2 px-4 rounded bg-blue-700 text-zinc-200 hover:bg-blue-800 transition duration-200"
-                            onClick={() => handleShoeSelection(shoe1.pk, shoe2.pk)} // Use T-shirt's ids for selection
-                        >
-                            Select
-                        </button>
+        <div className="flex flex-col justify-between items-center min-h-screen w-full bg-gradient-to-br from-blue-700 to-purple-800 text-zinc-200">
+            <div className="w-full">
+                <Selections selections={previousSelections} />
+            </div>
+            <div className="flex flex-col items-center justify-center flex-grow">
+                {loading ? (
+                    <Loading></Loading>
+                ) : shoe1 && shoe2 ? (
+                    <div className="flex space-x-16 shadow-lg p-20 rounded bg-white">
+                        <div className="flex flex-col items-center">
+                            <img
+                                src={shoe1.fields.image} // Use T-shirt's imageUrl for src
+                                alt={`T-Shirt ${shoe1.pk}`} // Use T-shirt's id for alt
+                                className="w-64 h-auto cursor-pointer"
+                                onClick={() => handleShoeSelection(shoe1.pk, shoe2.pk)} // Use T-shirt's ids for selection
+                            />
+                            <button
+                                className="mt-4 py-2 px-4 rounded bg-blue-700 text-zinc-200 hover:bg-blue-800 transition duration-200"
+                                onClick={() => handleShoeSelection(shoe1.pk, shoe2.pk)} // Use T-shirt's ids for selection
+                            >
+                                Select
+                            </button>
+                        </div>
+                        <div className="flex flex-col items-center">
+                            <img
+                                src={shoe2.fields.image} // Use T-shirt's imageUrl for src
+                                alt={`T-Shirt ${shoe2.pk}`} // Use T-shirt's id for alt
+                                className="w-64 h-auto cursor-pointer"
+                                onClick={() => handleShoeSelection(shoe2.pk, shoe1.pk)} // Use T-shirt's ids for selection
+                            />
+                            <button
+                                className="mt-4 py-2 px-4 rounded bg-blue-700 text-zinc-200 hover:bg-blue-800 transition duration-200"
+                                onClick={() => handleShoeSelection(shoe2.pk, shoe1.pk)} // Use T-shirt's ids for selection
+                            >
+                                Select
+                            </button>
+                        </div>
                     </div>
-                    <div className="flex flex-col items-center">
-                        <img
-                            src={shoe2.fields.image} // Use T-shirt's imageUrl for src
-                            alt={`T-Shirt ${shoe2.pk}`} // Use T-shirt's id for alt
-                            className="w-64 h-auto cursor-pointer"
-                            onClick={() => handleShoeSelection(shoe2.pk, shoe1.pk)} // Use T-shirt's ids for selection
-                        />
-                        <button
-                            className="mt-4 py-2 px-4 rounded bg-blue-700 text-zinc-200 hover:bg-blue-800 transition duration-200"
-                            onClick={() => handleShoeSelection(shoe2.pk, shoe1.pk)} // Use T-shirt's ids for selection
-                        >
-                            Select
-                        </button>
-                    </div>
-                </div>
-            ) : <Loading></Loading>}
+                ) : <Loading></Loading>}
+            </div>
+            <div className="w-full h-0"></div> {/* Placeholder to keep centering */}
         </div>
     );
 };
-
 export default ShoeComponent;
