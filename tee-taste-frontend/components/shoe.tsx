@@ -18,10 +18,17 @@ const ShoeComponent = () => {
 
     const [loading, setLoading] = useState(false);
 
+    const [previousSelections, setPreviousSelections] = useState<Shoe[]>([]);
+
     const handleShoeSelection = async (selectedId: string, notSelectedId: string) => {
         setLoading(true);
         await selectShoe(selectedId, notSelectedId);
         setLoading(false);
+
+        const selectedShoe = shoe1?.pk === selectedId ? shoe1 : shoe2;
+        if (selectedShoe) {
+            setPreviousSelections(prevSelections => [...prevSelections, selectedShoe]);
+        }
     };
 
     const backendApiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
@@ -129,6 +136,7 @@ const ShoeComponent = () => {
 
     return (
         <div className="flex items-center justify-center min-h-screen w-full bg-gradient-to-br to-80% from-blue-700 to-purple-800 text-zinc-200">
+            <Selections selections={previousSelections} />
             {loading ? (
                 <Loading></Loading>
             ) : shoe1 && shoe2 ? ( // make sure both T-shirts are loaded
