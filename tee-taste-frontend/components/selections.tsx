@@ -19,7 +19,7 @@ const Selections: React.FC<PreviousSelectionsProps> = ({ selections, onGetRecomm
         <div className="flex justify-center mb-8">
             <div className="flex flex-nowrap overflow-x-hidden whitespace-nowrap">
                 {limitedSelections.map((selection, index) => (
-                    <div key={index} className="m-4">
+                    <div key={index} className="m-4 rounded bg-white p-1">
                         <img src={selection.fields.image} alt={`Previous Selection ${selection.pk}`} className="w-32 h-auto" />
                     </div>
                 ))}
