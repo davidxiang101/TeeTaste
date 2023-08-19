@@ -6,7 +6,7 @@ type WelcomeComponentProps = {
 
 const WelcomeComponent: React.FC<WelcomeComponentProps> = ({ onExplore }) => {
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br to-80% from-blue-700 to-purple-800 text-zinc-200">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-sky-400 to-indigo-900 text-zinc-200">
             <h1 className="text-4xl font-bold mb-4">Welcome to Shoe Taste!</h1>
             <p className="text-lg text-center mb-6 max-w-md">
                 Discover the finest collection of sneakers and find your perfect fit. Join the community of shoe enthusiasts and explore the world of style and comfort.
