@@ -134,7 +134,7 @@ const ShoeComponent = () => {
     }, []);
 
     return (
-        <div className="relative min-h-screen w-full bg-gradient-to-br from-blue-700 to-purple-800 text-zinc-200">
+        <div className="relative min-h-screen w-full bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))] from-sky-400 to-indigo-900 text-zinc-200">
             <div className="absolute top-0 left-0 w-full">
                 <Selections selections={previousSelections} onGetRecommendations={fetchNextShoes} />
             </div>
