@@ -6,13 +6,6 @@ import Selections from './selections'; // Adjust the path according to your proj
 import { backendApiUrl } from '@/app/constants';
 
 const ShoeComponent = () => {
-    interface Shoe {
-        pk: string;
-        fields: {
-            image: string;
-        };
-    }
-
     const [shoe1, setShoe1] = useState<Shoe | null>(null);
     const [shoe2, setShoe2] = useState<Shoe | null>(null);
 
@@ -143,7 +136,7 @@ const ShoeComponent = () => {
 
     return (
         <div className="relative min-h-screen w-full bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-sky-400 to-indigo-900 text-zinc-200">
-            <div className="absolute top-0 left-0 w-full">
+            <div className="absolute top-0 left-0 w-full z-50">
                 <Selections selections={previousSelections} />
             </div>
             <div className="absolute top-0 left-0 bottom-0 right-0 flex items-center justify-center">
