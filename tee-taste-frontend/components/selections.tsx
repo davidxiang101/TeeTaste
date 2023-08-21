@@ -25,7 +25,7 @@ const Selections: React.FC<PreviousSelectionsProps> = ({ selections, onGetRecomm
                 ))}
             </div>
             {limitedSelections.length === 6 && (
-                <button onClick={onGetRecommendations} className="ml-4 py-2 px-4 rounded bg-blue-700 text-zinc-200 hover:bg-blue-800 transition duration-200">
+                <button onClick={onGetRecommendations} className="m-4 p-1 rounded bg-blue-700 text-zinc-200 hover:bg-blue-800 transition duration-200">
                     Get Recommendations
                 </button>
             )}
