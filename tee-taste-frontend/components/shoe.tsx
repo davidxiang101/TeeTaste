@@ -73,7 +73,17 @@ const ShoeComponent = () => {
 
     const fetchNextShoes = async () => {
         try {
-            const response = await fetch(`${backendApiUrl}/fetch_next_shoes/`);
+            const nonSelectedShoesIds = nonSelectedShoes.map(shoe => shoe.pk).join(',');
+
+            const response = await fetch(`${backendApiUrl}/fetch_next_shoes/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    non_selected_shoes_ids: nonSelectedShoesIds,
+                }),
+            });
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
