@@ -12,6 +12,43 @@ interface PreviousSelectionsProps {
     onGetRecommendations: () => void; // Define a callback for fetching recommendations
 }
 
+const onGetRecommendations = async () => {
+    // Prepare the data you want to send (e.g., selected shoe IDs)
+    const data = {
+        selected_shoes_ids: limitedSelections.map(shoe => shoe.pk),
+    };
+
+    // Make the API call to get the recommendations
+    try {
+        const response = await fetch(`${backendApiUrl}/get_recommendations/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch recommendations');
+        }
+
+        const result = await response.json();
+
+        // Save the result to a state or store, depending on your state management solution
+        // For example, you could use Redux, Context API, etc.
+        // Alternatively, you could pass the result as a URL parameter or save it in local storage
+        saveRecommendations(result);
+
+        // Redirect to the new page
+        window.location.href = '/recommendations'; // Adjust this to your routing solution
+
+    } catch (error) {
+        console.error(error);
+        // Handle the error as needed
+    }
+};
+
+
 const Selections: React.FC<PreviousSelectionsProps> = ({ selections, onGetRecommendations }) => {
     const limitedSelections = selections.slice(-6); // Only take the last six selections
 
