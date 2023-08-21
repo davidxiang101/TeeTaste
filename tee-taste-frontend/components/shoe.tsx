@@ -74,6 +74,7 @@ const ShoeComponent = () => {
     const fetchNextShoes = async () => {
         try {
             const nonSelectedShoesIds = nonSelectedShoes.map(shoe => shoe.pk).join(',');
+            const selectedShoesIds = previousSelections.map(shoe => shoe.pk).join(',');
 
             const response = await fetch(`${backendApiUrl}/fetch_next_shoes/`, {
                 method: 'POST',
@@ -82,6 +83,7 @@ const ShoeComponent = () => {
                 },
                 body: new URLSearchParams({
                     non_selected_shoes_ids: nonSelectedShoesIds,
+                    selected_shoes_ids: selectedShoesIds,
                 }),
             });
 
