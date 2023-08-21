@@ -12,9 +12,17 @@ interface PreviousSelectionsProps {
     selections: Shoe[];
 }
 
+type RecommendationsResponse = {
+    recommendations: Array<Shoe>;
+};
+
 
 const Selections: React.FC<PreviousSelectionsProps> = ({ selections }) => {
     const limitedSelections = selections.slice(-6); // Only take the last six selections
+
+    const saveRecommendations = (result: RecommendationsResponse) => {
+        sessionStorage.setItem('recommendations', JSON.stringify(result));
+    };
 
     const onGetRecommendations = async () => {
         // Prepare the data you want to send (e.g., selected shoe IDs)
@@ -36,7 +44,7 @@ const Selections: React.FC<PreviousSelectionsProps> = ({ selections }) => {
                 throw new Error('Failed to fetch recommendations');
             }
 
-            const result = await response.json();
+            const result: RecommendationsResponse = await response.json();
 
             // Save the result to a state or store, depending on your state management solution
             // For example, you could use Redux, Context API, etc.
@@ -48,7 +56,6 @@ const Selections: React.FC<PreviousSelectionsProps> = ({ selections }) => {
 
         } catch (error) {
             console.error(error);
-            // Handle the error as needed
         }
     };
 
