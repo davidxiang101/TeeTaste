@@ -8,7 +8,9 @@ from .models import Shoe
 import random
 from annoy import AnnoyIndex
 from sklearn.metrics.pairwise import cosine_distances
+from django.views.decorators.http import require_POST
 import numpy as np
+import json
 
 
 # Assuming feature vectors are of length 346112
@@ -20,6 +22,34 @@ for shoe in Shoe.objects.all():
 
 # Build a tree for the index - increase the number of trees for more precision
 t.build(2)
+
+
+@csrf_exempt
+@require_POST
+def get_recommendations(request):
+    try:
+        body_unicode = request.body.decode("utf-8")
+        body_data = json.loads(body_unicode)
+        selected_shoes_ids = body_data.get("selected_shoes_ids")
+        selected_shoes = [Shoe.objects.get(pk=pk) for pk in selected_shoes_ids]
+
+        recommendations = []
+        for shoe in selected_shoes:
+            # Get the 10 most similar shoes
+            indices, _ = t.get_nns_by_vector(
+                shoe.get_feature_vector(), 10, include_distances=False
+            )
+
+            # Exclude the query shoe itself
+            similar_shoes = [
+                Shoe.objects.get(pk=index) for index in indices if index != shoe.pk
+            ]
+            recommendations += similar_shoes
+
+        shoes_json = serializers.serialize("json", recommendations)
+        return JsonResponse({"recommendations": shoes_json}, safe=False)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=400)
 
 
 # Use the index in your view
