@@ -119,7 +119,13 @@ def save_interaction(request):
 def set_session_cookie(request):
     response = HttpResponse("Setting a session cookie")
     session_id = uuid.uuid4()
-    response.set_cookie("session_id", session_id, max_age=30 * 24 * 60 * 60)  # 30 days
+    response.set_cookie(
+        "session_id",
+        value="session_id",
+        secure=True,
+        samesite="None",
+        max_age=30 * 24 * 60 * 60,
+    )
     return response
 
 
