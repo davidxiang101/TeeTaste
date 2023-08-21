@@ -19,6 +19,7 @@ const ShoeComponent = () => {
     const [loading, setLoading] = useState(false);
 
     const [previousSelections, setPreviousSelections] = useState<Shoe[]>([]);
+    const [nonSelectedShoes, setNonSelectedShoes] = useState<Shoe[]>([]);
 
     const handleShoeSelection = async (selectedId: string, notSelectedId: string) => {
         setLoading(true);
@@ -26,8 +27,14 @@ const ShoeComponent = () => {
         setLoading(false);
 
         const selectedShoe = shoe1?.pk === selectedId ? shoe1 : shoe2;
+        const nonSelectedShoe = shoe1?.pk === notSelectedId ? shoe1 : shoe2;
+
         if (selectedShoe) {
             setPreviousSelections(prevSelections => [...prevSelections, selectedShoe]);
+        }
+
+        if (nonSelectedShoe) {
+            setNonSelectedShoes(prevNonSelectedShoes => [...prevNonSelectedShoes, nonSelectedShoe]);
         }
     };
 
