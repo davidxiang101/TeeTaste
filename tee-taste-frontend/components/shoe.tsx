@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Loading from './loading';
 import Selections from './selections'; // Adjust the path according to your project structure
-
+import { backendApiUrl } from '@/app/constants';
 
 const ShoeComponent = () => {
     interface Shoe {
@@ -37,8 +37,6 @@ const ShoeComponent = () => {
             setNonSelectedShoes(prevNonSelectedShoes => [...prevNonSelectedShoes, nonSelectedShoe]);
         }
     };
-
-    const backendApiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
 
     const selectShoe = async (selectedId: string, notSelectedId: string) => {
         setLoading(true);
@@ -146,7 +144,7 @@ const ShoeComponent = () => {
     return (
         <div className="relative min-h-screen w-full bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-sky-400 to-indigo-900 text-zinc-200">
             <div className="absolute top-0 left-0 w-full">
-                <Selections selections={previousSelections} onGetRecommendations={fetchNextShoes} />
+                <Selections selections={previousSelections} />
             </div>
             <div className="absolute top-0 left-0 bottom-0 right-0 flex items-center justify-center">
                 {loading ? (
