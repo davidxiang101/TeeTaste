@@ -1,13 +1,6 @@
 import React from 'react';
 import { backendApiUrl } from '@/app/constants';
 
-interface Shoe {
-    pk: string;
-    fields: {
-        image: string;
-    };
-}
-
 interface PreviousSelectionsProps {
     selections: Shoe[];
 }
