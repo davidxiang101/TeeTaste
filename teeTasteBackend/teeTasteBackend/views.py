@@ -36,7 +36,7 @@ def get_recommendations(request):
         recommendations = []
         for shoe in selected_shoes:
             # Get the 10 most similar shoes
-            indices, _ = t.get_nns_by_vector(
+            indices = t.get_nns_by_vector(
                 shoe.get_feature_vector(), 10, include_distances=False
             )
 
@@ -49,6 +49,7 @@ def get_recommendations(request):
         shoes_json = serializers.serialize("json", recommendations)
         return JsonResponse({"recommendations": shoes_json}, safe=False)
     except Exception as e:
+        print(e)
         return JsonResponse({"error": str(e)}, status=400)
 
 

@@ -24,6 +24,7 @@ urlpatterns = [
     path("save_interaction/", views.save_interaction, name="save_interaction"),
     path("fetch_next_shoes/", views.fetch_next_shoes, name="fetch_next_shoes"),
     path("fetch_random_shoes/", views.fetch_random_shoes, name="fetch_random_shoes"),
+    path("get_recommendations/", views.get_recommendations, name="get_recommendations"),
 ]
 
 # Serve media files during development
