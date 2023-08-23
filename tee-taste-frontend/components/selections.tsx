@@ -2,7 +2,6 @@ import React from 'react';
 import { backendApiUrl } from '@/app/constants';
 import { useRouter } from 'next/router';
 
-
 interface PreviousSelectionsProps {
     selections: Shoe[];
 }
@@ -54,7 +53,7 @@ const Selections: React.FC<PreviousSelectionsProps> = ({ selections }) => {
             saveRecommendations(result);
 
             // Redirect to the new page
-            router.push('/recommendations');
+            router.push('/recommendationsPage');
         } catch (error) {
             console.error(error);
         }
