@@ -1,3 +1,5 @@
+'use client';
+
 type RecommendationsResponse = {
     recommendations: Shoe[];
     // include any other properties that might be part of the response
@@ -6,7 +8,7 @@ type RecommendationsResponse = {
 import React, { useEffect, useState } from 'react';
 import Recommendations from './recs';
 
-const RecommendationsPage: React.FC = () => {
+const recommendationsHome: React.FC = () => {
     const [recommendations, setRecommendations] = useState<Shoe[]>([]);
 
     useEffect(() => {
@@ -24,4 +26,4 @@ const RecommendationsPage: React.FC = () => {
     return <Recommendations recommendations={recommendations} />;
 };
 
-export default RecommendationsPage;
+export default recommendationsHome;

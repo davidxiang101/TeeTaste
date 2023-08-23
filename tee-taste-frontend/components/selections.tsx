@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react';
 import { backendApiUrl } from '@/app/constants';
 import { useRouter } from 'next/navigation';
@@ -53,7 +55,7 @@ const Selections: React.FC<PreviousSelectionsProps> = ({ selections }) => {
             saveRecommendations(result);
 
             // Redirect to the new page
-            router.push('/recommendationsPage');
+            router.push('/recommendations');
         } catch (error) {
             console.error(error);
         }
