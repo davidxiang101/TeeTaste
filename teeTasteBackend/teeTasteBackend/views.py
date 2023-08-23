@@ -9,6 +9,7 @@ import random
 from annoy import AnnoyIndex
 from sklearn.metrics.pairwise import cosine_distances
 from django.views.decorators.http import require_POST
+from django.core.serializers import serialize
 import numpy as np
 import json
 
@@ -46,9 +47,13 @@ def get_recommendations(request):
             ]
             recommendations += similar_shoes
 
-        shoes_json = serializers.serialize("json", recommendations)
-        shoe_data = json.loads(shoes_json)  # Parse JSON to get array
-        return JsonResponse({"recommendations": shoe_data}, safe=False)
+        # Serialize the queryset to JSON
+        shoes_json_str = serialize("json", recommendations)
+
+        # Parse the serialized JSON string to convert it into actual JSON objects
+        shoes_json = json.loads(shoes_json_str)
+
+        return JsonResponse({"recommendations": shoes_json}, safe=False)
     except Exception as e:
         print(e)
         return JsonResponse({"error": str(e)}, status=400)

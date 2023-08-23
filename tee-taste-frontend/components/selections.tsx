@@ -47,6 +47,7 @@ const Selections: React.FC<PreviousSelectionsProps> = ({ selections }) => {
             // Save the result to a state or store, depending on your state management solution
             // For example, you could use Redux, Context API, etc.
             // Alternatively, you could pass the result as a URL parameter or save it in local storage
+            console.log(result);
             saveRecommendations(result);
 
             // Redirect to the new page
