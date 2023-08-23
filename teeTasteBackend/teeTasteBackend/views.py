@@ -47,7 +47,8 @@ def get_recommendations(request):
             recommendations += similar_shoes
 
         shoes_json = serializers.serialize("json", recommendations)
-        return JsonResponse({"recommendations": shoes_json}, safe=False)
+        shoe_data = json.loads(shoes_json)  # Parse JSON to get array
+        return JsonResponse({"recommendations": shoe_data}, safe=False)
     except Exception as e:
         print(e)
         return JsonResponse({"error": str(e)}, status=400)

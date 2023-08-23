@@ -14,7 +14,12 @@ const Selections: React.FC<PreviousSelectionsProps> = ({ selections }) => {
     const limitedSelections = selections.slice(-6); // Only take the last six selections
 
     const saveRecommendations = (result: RecommendationsResponse) => {
-        sessionStorage.setItem('recommendations', JSON.stringify(result));
+        const essentialData = result.recommendations.map(shoe => {
+            return {
+                id: shoe.pk,
+            };
+        });
+        sessionStorage.setItem('recommendations', JSON.stringify(essentialData));
     };
 
     const onGetRecommendations = async () => {
