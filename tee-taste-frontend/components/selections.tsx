@@ -1,6 +1,6 @@
 import React from 'react';
 import { backendApiUrl } from '@/app/constants';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 interface PreviousSelectionsProps {
     selections: Shoe[];
