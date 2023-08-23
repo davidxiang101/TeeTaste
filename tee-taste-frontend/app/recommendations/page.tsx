@@ -1,29 +1,44 @@
 'use client';
 
+import React, { useEffect, useState } from 'react';
+
 type RecommendationsResponse = {
     recommendations: Shoe[];
-    // include any other properties that might be part of the response
 };
 
-import React, { useEffect, useState } from 'react';
-import Recommendations from './recs';
-
-const recommendationsHome: React.FC = () => {
+const Home: React.FC = () => {
     const [recommendations, setRecommendations] = useState<Shoe[]>([]);
 
     useEffect(() => {
         // Retrieve the recommendations from session storage
         const savedRecommendations = sessionStorage.getItem('recommendations');
         if (savedRecommendations) {
-            const result: RecommendationsResponse = JSON.parse(savedRecommendations);
-            setRecommendations(result.recommendations);
+            try {
+                const result: RecommendationsResponse = JSON.parse(savedRecommendations);
+                setRecommendations(result.recommendations || []);
+            } catch (error) {
+                console.error('Error parsing recommendations:', error);
+                setRecommendations([]);
+            }
         } else {
             console.error('Recommendations not found in session storage');
-            // Handle the error as needed
+            setRecommendations([]);
         }
     }, []);
 
-    return <Recommendations recommendations={recommendations} />;
+
+    return (
+        <div className="container">
+            <h1>Recommended Shoes</h1>
+            <div className="recommendations-list">
+                {recommendations.map((shoe) => (
+                    <div key={shoe.pk} className="shoe-item">
+                        {/* Render other details of the shoe */}
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
 };
 
-export default recommendationsHome;
+export default Home;
