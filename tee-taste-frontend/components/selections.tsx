@@ -1,5 +1,7 @@
 import React from 'react';
 import { backendApiUrl } from '@/app/constants';
+import { useRouter } from 'next/router';
+
 
 interface PreviousSelectionsProps {
     selections: Shoe[];
@@ -11,6 +13,7 @@ type RecommendationsResponse = {
 
 
 const Selections: React.FC<PreviousSelectionsProps> = ({ selections }) => {
+    const router = useRouter();
     const limitedSelections = selections.slice(-6); // Only take the last six selections
 
     const saveRecommendations = (result: RecommendationsResponse) => {
@@ -51,8 +54,7 @@ const Selections: React.FC<PreviousSelectionsProps> = ({ selections }) => {
             saveRecommendations(result);
 
             // Redirect to the new page
-            window.location.href = '/recommendations'; // Adjust this to your routing solution
-
+            router.push('/recommendations');
         } catch (error) {
             console.error(error);
         }
