@@ -34,6 +34,11 @@ const Home: React.FC = () => {
                 {recommendations.map((shoe) => (
                     <div key={shoe.pk} className="shoe-item">
                         {/* Render other details of the shoe */}
+                        <img
+                            src={shoe.fields.image} // Use T-shirt's imageUrl for src
+                            alt={`T-Shirt ${shoe.pk}`} // Use T-shirt's id for alt
+                            className="w-64 h-auto"
+                        />
                     </div>
                 ))}
             </div>
