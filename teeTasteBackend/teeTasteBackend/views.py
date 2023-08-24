@@ -55,7 +55,6 @@ def get_recommendations(request):
 
         return JsonResponse({"recommendations": shoes_json}, safe=False)
     except Exception as e:
-        print(e)
         return JsonResponse({"error": str(e)}, status=400)
 
 

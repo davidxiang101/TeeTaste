@@ -12,6 +12,7 @@ const Home: React.FC = () => {
     useEffect(() => {
         // Retrieve the recommendations from session storage
         const savedRecommendations = sessionStorage.getItem('recommendations');
+        console.log('savedRecommendations', savedRecommendations);
         if (savedRecommendations) {
             try {
                 const result: RecommendationsResponse = JSON.parse(savedRecommendations);

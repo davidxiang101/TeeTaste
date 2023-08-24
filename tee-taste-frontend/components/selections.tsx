@@ -20,8 +20,11 @@ const Selections: React.FC<PreviousSelectionsProps> = ({ selections }) => {
     const saveRecommendations = (result: RecommendationsResponse) => {
         const essentialData = result.recommendations.map(shoe => {
             return {
-                id: shoe.pk,
-            };
+                pk: shoe.pk,
+                fields: {
+                    image: shoe.fields.image,
+                },
+            }
         });
         sessionStorage.setItem('recommendations', JSON.stringify(essentialData));
     };
@@ -48,9 +51,6 @@ const Selections: React.FC<PreviousSelectionsProps> = ({ selections }) => {
 
             const result: RecommendationsResponse = await response.json();
 
-            // Save the result to a state or store, depending on your state management solution
-            // For example, you could use Redux, Context API, etc.
-            // Alternatively, you could pass the result as a URL parameter or save it in local storage
             console.log(result);
             saveRecommendations(result);
 
