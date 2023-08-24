@@ -10,13 +10,11 @@ const Home: React.FC = () => {
     const [recommendations, setRecommendations] = useState<Shoe[]>([]);
 
     useEffect(() => {
-        // Retrieve the recommendations from session storage
         const savedRecommendations = sessionStorage.getItem('recommendations');
-        console.log('savedRecommendations', savedRecommendations);
         if (savedRecommendations) {
             try {
-                const result: RecommendationsResponse = JSON.parse(savedRecommendations);
-                setRecommendations(result.recommendations || []);
+                const result: Shoe[] = JSON.parse(savedRecommendations);
+                setRecommendations(result);
             } catch (error) {
                 console.error('Error parsing recommendations:', error);
                 setRecommendations([]);
@@ -25,6 +23,7 @@ const Home: React.FC = () => {
             console.error('Recommendations not found in session storage');
             setRecommendations([]);
         }
+        console.log('recommendations', recommendations);
     }, []);
 
 
