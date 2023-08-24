@@ -22,7 +22,7 @@ const Selections: React.FC<PreviousSelectionsProps> = ({ selections }) => {
             return {
                 pk: shoe.pk,
                 fields: {
-                    image: shoe.fields.image,
+                    image: `${backendApiUrl}/media/${shoe.fields.image}`,
                 },
             }
         });
