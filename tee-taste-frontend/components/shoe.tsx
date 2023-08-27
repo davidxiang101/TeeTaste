@@ -52,7 +52,7 @@ const ShoeComponent = () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            await fetchNextShoes();
+            await fetchRandomShoes();
 
         } catch (error) {
             console.error('Error:', error);
