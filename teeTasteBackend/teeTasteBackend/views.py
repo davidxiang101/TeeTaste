@@ -34,18 +34,21 @@ def get_recommendations(request):
         selected_shoes_ids = body_data.get("selected_shoes_ids")
         selected_shoes = [Shoe.objects.get(pk=pk) for pk in selected_shoes_ids]
 
-        recommendations = []
-        for shoe in selected_shoes:
-            # Get the 10 most similar shoes
-            indices = t.get_nns_by_vector(
-                shoe.get_feature_vector(), 10, include_distances=False
-            )
+        # Calculate the average feature vector
+        if not selected_shoes:
+            return JsonResponse({"error": "No shoes selected"}, status=400)
 
-            # Exclude the query shoe itself
-            similar_shoes = [
-                Shoe.objects.get(pk=index) for index in indices if index != shoe.pk
-            ]
-            recommendations += similar_shoes
+        avg_vector = [0] * len(selected_shoes[0].get_feature_vector())
+        for shoe in selected_shoes:
+            for i, feature in enumerate(shoe.get_feature_vector()):
+                avg_vector[i] += feature
+        avg_vector = [x / len(selected_shoes) for x in avg_vector]
+
+        # Get the 6 most similar shoes to the average feature vector
+        indices = t.get_nns_by_vector(avg_vector, 6, include_distances=False)
+
+        # Convert the indices to Shoe objects
+        recommendations = [Shoe.objects.get(pk=index) for index in indices]
 
         # Serialize the queryset to JSON
         shoes_json_str = serialize("json", recommendations)
