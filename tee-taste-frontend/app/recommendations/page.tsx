@@ -28,22 +28,45 @@ const Home: React.FC = () => {
 
 
     return (
-        <div className="container">
-            <h1>Recommended Shoes</h1>
-            <div className="recommendations-list">
-                {recommendations.map((shoe) => (
-                    <div key={shoe.pk} className="shoe-item">
-                        {/* Render other details of the shoe */}
-                        <img
-                            src={shoe.fields.image} // Use T-shirt's imageUrl for src
-                            alt={`T-Shirt ${shoe.pk}`} // Use T-shirt's id for alt
-                            className="w-64 h-auto"
-                        />
-                    </div>
-                ))}
-            </div>
+        <div className="container mx-auto p-4">
+            <h1 className="text-3xl font-bold mb-4">Recommended Shoes</h1>
+
+            {/* Top Picks Section */}
+            <section className="mb-8">
+                <h2 className="text-2xl font-semibold mb-2">Your Picks</h2>
+                <div className="grid grid-cols-3 gap-4">
+                    {recommendations.slice(0, 3).map((shoe) => (
+                        <div key={shoe.pk} className="shoe-item p-2 border rounded">
+                            <img
+                                src={shoe.fields.image}
+                                alt={`Shoe ${shoe.pk}`}
+                                className="w-full h-auto"
+                            />
+                            {/* Other shoe details can go here */}
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Other Suggestions Section */}
+            <section>
+                <h2 className="text-2xl font-semibold mb-2">Our Suggestions</h2>
+                <div className="grid grid-cols-3 gap-4">
+                    {recommendations.slice(3).map((shoe) => (
+                        <div key={shoe.pk} className="shoe-item p-2 border rounded">
+                            <img
+                                src={shoe.fields.image}
+                                alt={`Shoe ${shoe.pk}`}
+                                className="w-full h-auto"
+                            />
+                            {/* Other shoe details can go here */}
+                        </div>
+                    ))}
+                </div>
+            </section>
         </div>
     );
+
 };
 
 export default Home;

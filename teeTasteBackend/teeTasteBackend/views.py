@@ -45,7 +45,7 @@ def get_recommendations(request):
         avg_vector = [x / len(selected_shoes) for x in avg_vector]
 
         # Get the 6 most similar shoes to the average feature vector
-        indices = t.get_nns_by_vector(avg_vector, 6, include_distances=False)
+        indices = t.get_nns_by_vector(avg_vector, 16, include_distances=False)
 
         # Convert the indices to Shoe objects
         recommendations = [Shoe.objects.get(pk=index) for index in indices]
