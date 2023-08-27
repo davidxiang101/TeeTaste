@@ -33,7 +33,7 @@ const Home: React.FC = () => {
 
             {/* Top Picks Section */}
             <section className="mb-8 text-center">
-                <h2 className="text-2xl font-semibold mb-2 mt-4">Your Picks</h2>
+                <h2 className="text-2xl font-semibold my-2">Your Picks</h2>
                 <div className="grid grid-cols-3 gap-4">
                     {recommendations.slice(0, 6).map((shoe) => (
                         <div key={shoe.pk} className="shoe-item p-2 m-6 border bg-white rounded shadow-lg">
