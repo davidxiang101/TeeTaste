@@ -28,15 +28,15 @@ const Home: React.FC = () => {
 
 
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-3xl font-bold mb-4">Recommended Shoes</h1>
+        <div className="relative min-h-screen w-full text-center bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-sky-400 to-indigo-900 text-zinc-200">
+            <h1 className="text-3xl font-bold py-20">Recommended Shoes</h1>
 
             {/* Top Picks Section */}
-            <section className="mb-8">
-                <h2 className="text-2xl font-semibold mb-2">Your Picks</h2>
+            <section className="mb-8 text-center">
+                <h2 className="text-2xl font-semibold mb-2 mt-4">Your Picks</h2>
                 <div className="grid grid-cols-3 gap-4">
                     {recommendations.slice(0, 6).map((shoe) => (
-                        <div key={shoe.pk} className="shoe-item p-2 border rounded">
+                        <div key={shoe.pk} className="shoe-item p-2 m-6 border bg-white rounded shadow-lg">
                             <img
                                 src={shoe.fields.image}
                                 alt={`Shoe ${shoe.pk}`}
@@ -49,11 +49,11 @@ const Home: React.FC = () => {
             </section>
 
             {/* Other Suggestions Section */}
-            <section>
+            <section className="mt-20">
                 <h2 className="text-2xl font-semibold mb-2">Our Suggestions</h2>
                 <div className="grid grid-cols-3 gap-4">
                     {recommendations.slice(6).map((shoe) => (
-                        <div key={shoe.pk} className="shoe-item p-2 border rounded">
+                        <div key={shoe.pk} className="shoe-item p-2 border bg-white m-6 rounded shadow-lg">
                             <img
                                 src={shoe.fields.image}
                                 alt={`Shoe ${shoe.pk}`}

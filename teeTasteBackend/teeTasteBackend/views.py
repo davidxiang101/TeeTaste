@@ -44,14 +44,22 @@ def get_recommendations(request):
                 avg_vector[i] += feature
         avg_vector = [x / len(selected_shoes) for x in avg_vector]
 
-        # Get the 6 most similar shoes to the average feature vector
-        indices = t.get_nns_by_vector(avg_vector, 16, include_distances=False)
+        # Get the 6 + 12 = 18 most similar shoes to the average feature vector
+        indices = t.get_nns_by_vector(avg_vector, 18, include_distances=False)
 
         # Convert the indices to Shoe objects
-        recommendations = [Shoe.objects.get(pk=index) for index in indices]
+        all_recommendations = [Shoe.objects.get(pk=index) for index in indices]
+
+        # Filter out the original selected_shoes from all_recommendations
+        additional_recommendations = [
+            shoe for shoe in all_recommendations if shoe.pk not in selected_shoes_ids
+        ][:12]
+
+        # Combine the selected shoes and additional recommendations
+        final_recommendations = selected_shoes + additional_recommendations
 
         # Serialize the queryset to JSON
-        shoes_json_str = serialize("json", recommendations)
+        shoes_json_str = serialize("json", final_recommendations)
 
         # Parse the serialized JSON string to convert it into actual JSON objects
         shoes_json = json.loads(shoes_json_str)
