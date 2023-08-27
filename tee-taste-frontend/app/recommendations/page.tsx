@@ -35,7 +35,7 @@ const Home: React.FC = () => {
             <section className="mb-8">
                 <h2 className="text-2xl font-semibold mb-2">Your Picks</h2>
                 <div className="grid grid-cols-3 gap-4">
-                    {recommendations.slice(0, 3).map((shoe) => (
+                    {recommendations.slice(0, 6).map((shoe) => (
                         <div key={shoe.pk} className="shoe-item p-2 border rounded">
                             <img
                                 src={shoe.fields.image}
@@ -52,7 +52,7 @@ const Home: React.FC = () => {
             <section>
                 <h2 className="text-2xl font-semibold mb-2">Our Suggestions</h2>
                 <div className="grid grid-cols-3 gap-4">
-                    {recommendations.slice(3).map((shoe) => (
+                    {recommendations.slice(6).map((shoe) => (
                         <div key={shoe.pk} className="shoe-item p-2 border rounded">
                             <img
                                 src={shoe.fields.image}
