@@ -32,11 +32,16 @@ const Home: React.FC = () => {
 
     return (
         <div className="relative min-h-screen w-full text-center bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-sky-400 to-indigo-900 text-zinc-200">
-            <Link href="/">
-                <button className="py-2 px-4 mt-4 rounded bg-blue-700 text-white hover:bg-blue-800 transition duration-200">
-                    Back to Index
-                </button>
-            </Link>
+            <div className="absolute top-0 left-0 m-4">
+                <Link href="/">
+                    <button className="py-2 px-4 flex items-center rounded bg-transparent hover:bg-blue-800 transition duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        Back to Index
+                    </button>
+                </Link>
+            </div>
             <h1 className="text-3xl font-bold py-20">Recommended Shoes</h1>
 
             {/* Top Picks Section */}
